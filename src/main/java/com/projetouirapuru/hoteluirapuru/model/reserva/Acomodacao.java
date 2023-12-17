@@ -1,4 +1,4 @@
-package src.model.reserva;
+package com.projetouirapuru.hoteluirapuru.model.reserva;
 
 
 import java.util.ArrayList;
