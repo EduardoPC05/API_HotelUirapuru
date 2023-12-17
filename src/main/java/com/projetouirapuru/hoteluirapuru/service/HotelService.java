@@ -1,4 +1,4 @@
-package com.projetouirapuru.hoteluirapuru.model;
+package com.projetouirapuru.hoteluirapuru.service;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Acompanhante;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Cliente;
@@ -6,6 +6,7 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.funcionario.Funcionario;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
+import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Hotel {
+public class HotelService {
     private ArrayList<Reserva> reversasAtivas;
 
     private ArrayList<Funcionario> funcionarios;
@@ -21,7 +22,7 @@ public class Hotel {
     private ArrayList<Acomodacao> acomodacoes;
 
 
-    public Hotel() {
+    public HotelService() {
         // DADOS MOCKADOS
 
         Acomodacao teste = new Acomodacao("12","12","ELE È BOM DMS", TipoQuarto.LUXO);
@@ -39,7 +40,7 @@ public class Hotel {
 
     public boolean criarAcomodacao(String andar, String num, String descricao, TipoQuarto tipoQ){
         Acomodacao quarto = new Acomodacao(andar,num,descricao,tipoQ);
-         return addAcomodacao(quarto);
+        return addAcomodacao(quarto);
     }
     public boolean removerAcomodacao(Acomodacao quarto){
         //TODO
@@ -49,13 +50,17 @@ public class Hotel {
     public boolean removerAcomodacao(String codigo){
         return this.acomodacoes.removeIf(i -> i.getCodigo().equals(codigo));
     }
+
+    public ArrayList<Acomodacao> getAcomodacoes(){
+        return this.acomodacoes;
+    }
     public Acomodacao getAcomodacaoPorTipo(TipoQuarto tipoQuarto){
         for (Acomodacao acomodacao: acomodacoes) {
             if(acomodacao.getTipoQuarto() == tipoQuarto){
                 return acomodacao;
             }
         }
-       return null;
+        return null;
     }
     private boolean addAcomodacao(Acomodacao quarto){
         return this.acomodacoes.add(quarto);
@@ -96,7 +101,7 @@ public class Hotel {
     }
 
     private boolean removeReserva(Reserva excluir){
-       return this.reversasAtivas.remove(excluir);
+        return this.reversasAtivas.remove(excluir);
     }
 
     public ArrayList<Reserva> getReservas(String email){
@@ -111,7 +116,7 @@ public class Hotel {
         return reservasUsuario;
     }
     public Hospede criarHospedes(Cliente cliente, Endereco endereco, String telefone){
-       return new Hospede(cliente,endereco,telefone);
+        return new Hospede(cliente,endereco,telefone);
     }
 
     public Endereco criarEndereco( String estado,String cidade,String rua,String numero,String bairro){
@@ -181,6 +186,4 @@ public class Hotel {
         }
         return null;
     }
-
-
 }

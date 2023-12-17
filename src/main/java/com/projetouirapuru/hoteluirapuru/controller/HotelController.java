@@ -1,26 +1,27 @@
 package com.projetouirapuru.hoteluirapuru.controller;
 
+import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
+import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
+import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/hotel")
 public class HotelController {
 
-
-    @GetMapping(path = "/hospedes")
-    public String getHospedes() {
-        return "Hospedes, vários hospedes, muitos hospedes";
-    }
+    HotelService hotelService = new HotelService();
 
     @GetMapping(path = "/acomodacoes")
-    public String getAcomodacoes() {
-        return "Acomodações, várias acomodações, muitas acomodações";
+    public ArrayList<Acomodacao> getAcomodacoes() {
+        return hotelService.getAcomodacoes();
     }
 
-    @GetMapping(value = "/{id}")
-    public String getHospede(@PathVariable Long id) {
-        return "Hospede" + id;
-    }
+//    @GetMapping(path = "/acomodacoes")
+//    public String getAcomodacoes() {
+//        return "Hospedes, vários hospedes, muitos hospedes";
+//    }
 
 }
