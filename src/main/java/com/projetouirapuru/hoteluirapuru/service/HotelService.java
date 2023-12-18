@@ -15,6 +15,7 @@ import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 
@@ -53,14 +54,11 @@ public class HotelService {
         a.add(e1);
         Reserva reserva = criarReserva(ed,a, TipoQuarto.LUXO,LocalDate.of(2011,Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
 
+        efetuarCheckIn(reserva,endereco,"121212",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,22), LocalTime.of(14,0,0)));
         System.out.println(efetuarReserva(reserva));
 
 
     }
-
-//    public ArrayList<Reserva> getReversasAtivas() {
-//        return reversasAtivas;
-//    }
 
     public ArrayList<Funcionario> getFuncionarios() {
         return funcionarios;

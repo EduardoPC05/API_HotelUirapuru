@@ -56,16 +56,21 @@ public class HotelController {
     /*
        Rotas destinadas para CRUD de reservas
     */
-//    @GetMapping("/reservas")
-//    public ArrayList<Reserva> getReservas(){
-//        return hotelService.getReservas();
-//    }
-
+    @GetMapping("/reservas")
+    public ArrayList<Reserva> getReservas(){
+        return hotelService.getReservasAtivas();
+    }
     @GetMapping("/reservas/{email}")
     public ArrayList<Reserva> getReservasPessoa(@PathVariable String email){
         return hotelService.getReservas(email);
     }
 
+    @PostMapping("/reservas")
+    public
+
+    /*
+        Rotas destinadas para o CRUD de tipos de quarto
+     */
     @GetMapping("/tiposquartos")
     public ArrayList<Acomodacao> getTiposQuartosDisponiveis(){
         return hotelService.getTipoQuartosDisponiveis();
