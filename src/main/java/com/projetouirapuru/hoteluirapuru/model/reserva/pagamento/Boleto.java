@@ -1,10 +1,9 @@
 package com.projetouirapuru.hoteluirapuru.model.reserva.pagamento;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
-public class Boleto extends MetodoPagamento{
+public class Boleto {
     private String numero;
     private LocalDate dataValidade;
     private double valor;

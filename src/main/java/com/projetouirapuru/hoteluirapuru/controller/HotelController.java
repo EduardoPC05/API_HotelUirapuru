@@ -20,9 +20,6 @@ public class HotelController {
 
     HotelService hotelService = new HotelService();
 
-
-
-
     /*
         Rotas destinadas para CRUD de acomodacoes
      */

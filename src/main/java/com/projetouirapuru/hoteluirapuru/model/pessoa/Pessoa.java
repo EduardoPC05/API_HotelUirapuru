@@ -2,39 +2,29 @@ package com.projetouirapuru.hoteluirapuru.model.pessoa;
 
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
 
 public abstract class Pessoa {
     private String nome;
-    private InfosBasicas infosBasicas;
+    private Documento documento;
 
-    public Pessoa(String nome, InfosBasicas infosBasicas) {
+    public Pessoa(String nome, Documento documnto) {
         this.nome = nome;
-        this.infosBasicas = infosBasicas;
-    }
-
-    public void setInfosBasicas(InfosBasicas infosBasicas) {
-        this.infosBasicas = infosBasicas;
+        this.documento = documnto;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public InfosBasicas getInfosBasicas() {
-        return infosBasicas;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public Boolean hasDocumento(InfosBasicas infosBasicas){
-        return infosBasicas instanceof Documento;
+    public Documento getDocumento() {
+        return documento;
     }
 
-    public InfosBasicas getDocumento(InfosBasicas documento){
-        if(hasDocumento(documento)){
-            if(infosBasicas instanceof Documento){
-                return documento;
-            }
-        }
-        return null;
+    public void setInfosBasicas(Documento documnto) {
+        this.documento = documnto;
     }
 }
