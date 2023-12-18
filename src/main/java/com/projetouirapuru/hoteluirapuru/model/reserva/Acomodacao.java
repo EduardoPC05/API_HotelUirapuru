@@ -28,6 +28,9 @@ public class Acomodacao {
         setQtdpessoas(tipoQuarto);
     }
 
+    public Acomodacao() {
+    }
+
     private void setPrecoDiaria(TipoQuarto tipoQuarto){
         switch (tipoQuarto){
             case NORMAL:
@@ -117,5 +120,35 @@ public class Acomodacao {
         this.precoDiaria = precoDiaria;
     }
 
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
 
+    public void setAndar(String andar) {
+        this.andar = andar;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setTipoQuarto(TipoQuarto tipoQuarto) {
+        this.tipoQuarto = tipoQuarto;
+    }
+
+    public void setReservas(ArrayList<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
+    public void setLimiteAdultos(int limiteAdultos) {
+        this.limiteAdultos = limiteAdultos;
+    }
+
+    public void setLimiteCriancas(int limiteCriancas) {
+        this.limiteCriancas = limiteCriancas;
+    }
 }

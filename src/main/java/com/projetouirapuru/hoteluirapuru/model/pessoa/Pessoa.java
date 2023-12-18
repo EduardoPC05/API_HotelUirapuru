@@ -12,6 +12,10 @@ public abstract class Pessoa {
         this.documento = documnto;
     }
 
+    public Pessoa() {
+
+    }
+
     public String getNome() {
         return nome;
     }
@@ -24,7 +28,8 @@ public abstract class Pessoa {
         return documento;
     }
 
-    public void setInfosBasicas(Documento documnto) {
-        this.documento = documnto;
+    public void setDocumento(Documento documento) {
+        this.documento = documento;
     }
+
 }

@@ -1,16 +1,11 @@
 package com.projetouirapuru.hoteluirapuru.controller;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
-import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
-import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckIn;
-import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Month;
+
 import java.util.ArrayList;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -23,6 +18,10 @@ public class HotelController {
     /*
         Rotas destinadas para CRUD de acomodacoes
      */
+
+    /*
+
+
     @GetMapping("/acomodacoes")
     public ArrayList<Acomodacao> getAcomodacoes() {
         return hotelService.getAcomodacoes();
@@ -54,6 +53,10 @@ public class HotelController {
     /*
        Rotas destinadas para CRUD de reservas
     */
+
+    /*
+
+
     @GetMapping("/reservas")
     public ArrayList<Reserva> getReservas(){
         return hotelService.getReservasAtivas();
@@ -76,14 +79,72 @@ public class HotelController {
         return new Reserva();
     }
 
-
+     */
     /*
         Rotas destinadas para o CRUD de tipos de quarto
-     */
+
     @GetMapping("/tiposquartos")
     public ArrayList<Acomodacao> getTiposQuartosDisponiveis(){
         return hotelService.getTipoQuartosDisponiveis();
     }
+
+     */
+
+
+    /*
+        ROTAS HOSPEDES
+    */
+    @PostMapping("/hospedes")
+    public boolean criaHospede(@RequestBody Hospede novo){
+        return hotelService.criaHospede(novo);
+    }
+    @GetMapping("/hospedes")
+    public ArrayList<Hospede> getHospedes(){
+        return hotelService.getHospedes();
+    }
+    @GetMapping("/hospedes/{documento}")
+    public Hospede getHospede(@PathVariable String documento){
+        return hotelService.getHospedePorDocumento(documento);
+    }
+    @PutMapping("/hospedes/{documento}")
+    public Hospede editaHospede(@PathVariable String documento,@RequestBody Hospede novo){
+        return hotelService.editaHospede(documento,novo);
+    }
+    @DeleteMapping("/hospedes/{codigo}")
+    public Hospede deletaHospede(@PathVariable String codigo){
+        return hotelService.excluiHospede(codigo);
+    }
+
+    /*
+        ROTAS ACOMODACOES
+    */
+
+    @PostMapping("/acomodacoes")
+    public Boolean criaAcomodacao(@RequestBody Acomodacao novo){
+        return hotelService.criaAcomodacao(novo);
+    }
+    @GetMapping("/acomodacoes")
+    public ArrayList<Acomodacao> getAcomodacoes(){
+        return hotelService.getAcomodacoes();
+    }
+
+    @GetMapping("/acomodacoes/{codigo}")
+    public Acomodacao getAcomodacao(@PathVariable String codigo){
+        return hotelService.getAcomodacao(codigo);
+    }
+    @PutMapping("/acomodacoes/{codigo}")
+    public Acomodacao EditaAcomodacao(@PathVariable String codigo,@RequestBody Acomodacao novo){
+        return hotelService.editaAcomodacao(codigo,novo);
+    }
+
+    @DeleteMapping("/acomodacoes/{codigo}")
+    public Acomodacao excluiAcomodacao(@PathVariable String codigo){
+        return hotelService.excluiAcomodacao(codigo);
+    }
+
+
+
+
 
 
 }

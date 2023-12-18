@@ -19,6 +19,10 @@ public class Hospede extends Pessoa {
         this.infoLogin = infoLogin;
     }
 
+    public Hospede() {
+        super();
+    }
+
     public Endereco getEndereco() {
         return endereco;
     }
@@ -44,5 +48,17 @@ public class Hospede extends Pessoa {
     @Override
     public Documento getDocumento() {
         return super.getDocumento();
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setInfoLogin(InfoLogin infoLogin) {
+        this.infoLogin = infoLogin;
     }
 }
