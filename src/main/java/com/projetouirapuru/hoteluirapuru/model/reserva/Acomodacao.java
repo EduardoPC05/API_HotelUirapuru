@@ -10,7 +10,6 @@ public class Acomodacao {
     private String numero;
     private String descricao;
     private TipoQuarto tipoQuarto;
-    private double precoDiaria;
     private ArrayList<Reserva> reservas;
     private int limiteAdultos;
 
@@ -23,25 +22,12 @@ public class Acomodacao {
         this.descricao = descricao;
         this.tipoQuarto = tipoQuarto;
         this.reservas = new ArrayList<Reserva>();
-        calculaPrecoDiaria(tipoQuarto);
         setCodigo(andar, numero);
         setQtdpessoas(tipoQuarto);
     }
-
     public Acomodacao(){};
-    private void calculaPrecoDiaria(TipoQuarto tipoQuarto){
-        switch (tipoQuarto){
-            case NORMAL:
-                precoDiaria = 100.00;
-                break;
-            case SUITE:
-                precoDiaria = 150.00;
-                break;
-            case LUXO:
-                precoDiaria = 250.00;
-                break;
-        }
-    }
+
+
 
     private void setQtdpessoas(TipoQuarto tipoQuarto){
         switch (tipoQuarto){
@@ -86,10 +72,6 @@ public class Acomodacao {
 
     public TipoQuarto getTipoQuarto() {
         return tipoQuarto;
-    }
-
-    public double getPrecoDiaria() {
-        return precoDiaria;
     }
 
     public int getLimiteAdultos() {

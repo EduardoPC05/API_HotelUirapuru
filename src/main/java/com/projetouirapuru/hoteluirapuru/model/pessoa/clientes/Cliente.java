@@ -1,15 +1,15 @@
 package com.projetouirapuru.hoteluirapuru.model.pessoa.clientes;
 
-import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 
+import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 
 public class Cliente extends Pessoa {
     private InfoLogin infoLogin;
 
-    public Cliente(String nome, Documento documento, InfoLogin infoLogin) {
-        super(nome, documento);
+    public Cliente(String nome, InfosBasicas infosBasicas, InfoLogin infoLogin) {
+        super(nome, infosBasicas);
         this.infoLogin = infoLogin;
     }
 

@@ -1,7 +1,5 @@
 package com.projetouirapuru.hoteluirapuru.model.pessoa.login;
 
-
-
 public class InfoLogin {
     private String email;
     private String senha;

@@ -1,7 +1,6 @@
 package com.projetouirapuru.hoteluirapuru.model.pessoa.clientes;
 
-import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Cliente;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 
@@ -11,7 +10,7 @@ public class Hospede extends Cliente {
     private String telefone;
 
     public Hospede(Cliente cliente, Endereco endereco, String telefone) {
-        super(cliente.getNome(), cliente.getDocumento(), cliente.getInfoLogin());
+        super(cliente.getNome(), cliente.getInfosBasicas(), cliente.getInfoLogin());
         this.endereco = endereco;
         this.telefone = telefone;
     }
@@ -35,7 +34,8 @@ public class Hospede extends Cliente {
     }
 
     @Override
-    public Documento getDocumento() {
-        return super.getDocumento();
+    public InfosBasicas
+    getInfosBasicas() {
+        return super.getInfosBasicas();
     }
 }

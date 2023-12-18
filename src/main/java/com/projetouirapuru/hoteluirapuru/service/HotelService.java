@@ -4,6 +4,7 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Acompanhante;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Cliente;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.TipoDocumento;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.funcionario.Funcionario;
@@ -12,6 +13,7 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
+import com.projetouirapuru.hoteluirapuru.model.reserva.pagamento.TipoPagamento;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,29 +44,26 @@ public class HotelService {
         acomodacoes.add(teste3);
 
         Endereco endereco = new Endereco("CE","Fortaleza","123123","Rua das avenidas","123");
-        Documento doc = new Documento("Eduardo", "Jucá", LocalDate.of(1999, Month.JANUARY, 1), "br", "123", TipoDocumento.CPF);
+
+        InfosBasicas infos = new InfosBasicas(TipoDocumento.RG, "45678");
+        Documento doc = new Documento(infos,"Eduardo", "Jucá", LocalDate.of(1999, Month.JANUARY, 1), "br");
 
         InfoLogin tes = new InfoLogin("@teste","123", TipoLogin.ADMINISTRADOR);
 
-        Cliente ed = new Cliente("Ed",doc,tes);
+        Cliente ed = new Cliente("Ed",infos,tes);
 
-        Acompanhante e1 = new Acompanhante("Au",doc);
+        Reserva reserva = criarReserva(ed, 1, TipoQuarto.LUXO,LocalDate.of(2011, Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
 
-        ArrayList<Acompanhante> a = new ArrayList<Acompanhante>();
-        a.add(e1);
-        Reserva reserva = criarReserva(ed,a, TipoQuarto.LUXO,LocalDate.of(2011,Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
-
-        efetuarCheckIn(reserva,endereco,"121212",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,22), LocalTime.of(14,0,0)));
         System.out.println(efetuarReserva(reserva));
 
+//        efetuarCheckIn(reserva,endereco,doc,"12334",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)));
 
     }
 
-    public ArrayList<Funcionario> getFuncionarios() {
-        return funcionarios;
+    public boolean criarAcomodacao(String andar, String num, String descricao, TipoQuarto tipoQ){
+        Acomodacao quarto = new Acomodacao(andar,num,descricao,tipoQ);
+        return addAcomodacao(quarto);
     }
-
-
     public boolean removerAcomodacao(Acomodacao quarto){
         //TODO
         //Fazer verificações referentes a debitos;
@@ -72,18 +71,6 @@ public class HotelService {
     }
     public boolean removerAcomodacao(String codigo){
         return this.acomodacoes.removeIf(i -> i.getCodigo().equals(codigo));
-    }
-
-    public ArrayList<Acomodacao> getAcomodacoes(){
-        return this.acomodacoes;
-    }
-    public Acomodacao getAcomodacao(String codigo){
-        for (Acomodacao i : getAcomodacoes()){
-            if (i.getCodigo().equals(codigo)){
-                return i;
-            }
-        }
-        return new Acomodacao();
     }
     public Acomodacao getAcomodacaoPorTipo(TipoQuarto tipoQuarto){
         for (Acomodacao acomodacao: acomodacoes) {
@@ -93,6 +80,14 @@ public class HotelService {
         }
         return null;
     }
+    public Acomodacao getAcomodacao(String codigo){
+        for (Acomodacao ac : acomodacoes){
+            if (ac.getCodigo().equals(codigo)){
+                return ac;
+            }
+        }
+        return new Acomodacao();
+    }
     public boolean addAcomodacao(Acomodacao quarto){
         return this.acomodacoes.add(quarto);
     }
@@ -100,28 +95,32 @@ public class HotelService {
         return this.acomodacoes.remove(quarto);
     }
 
-    private Acomodacao editaAcomodacao(Acomodacao novo, int index){
-        return this.acomodacoes.set(index,novo);
-    }
-    public Acomodacao editarAcomodacao(Acomodacao novo,String codigo){
-        return editaAcomodacao(novo, this.acomodacoes.indexOf(getAcomodacao(codigo)));
-    }
     public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
         ArrayList<Acomodacao> acomodacoesPorTipo = new ArrayList<Acomodacao>();
         for (Acomodacao acomodacao : acomodacoes) {
-            if (acomodacao.getTipoQuarto() == tipo) {
+            if (acomodacao.getTipoQuarto().equals(TipoQuarto.valueOf(String.valueOf(tipo)))) {
                 acomodacoesPorTipo.add(acomodacao);
             }
         }
         return acomodacoesPorTipo;
     }
+    public ArrayList<Acomodacao> getAcomodacoes(){
+        return this.acomodacoes;
+    }
 
-    public Reserva criarReserva(Cliente hospedePrincipal, ArrayList<Acompanhante> acompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
-        return new Reserva(hospedePrincipal, acompanhantes, tipoQuarto, checkIn, checkOut);
+    public Acomodacao editarAcomodacao(Acomodacao nova, String codigo){
+        return acomodacoes.set(acomodacoes.indexOf(getAcomodacao(codigo)),nova);
+    }
+
+
+
+    public Reserva criarReserva(Cliente hospedePrincipal, int qtdAcompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
+        return new Reserva(hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
     }
 
     public boolean efetuarReserva(Reserva nova){
         ArrayList<Acomodacao> acomodacoes = getAcomodacoesPorTipo(nova.getTipoQuarto());
+
         for(Acomodacao acomodacao: acomodacoes) {
             if(acomodacao.verificaReserva(nova)){
                 acomodacao.addReserva(nova);
@@ -151,7 +150,7 @@ public class HotelService {
         }
         return reservasUsuario;
     }
-    public Hospede criarHospedes(Cliente cliente, Endereco endereco, String telefone){
+    public Hospede criarHospedes(Cliente cliente,Endereco endereco, String telefone){
         return new Hospede(cliente,endereco,telefone);
     }
 
@@ -171,9 +170,20 @@ public class HotelService {
         return  retorno;
     }
 
-    public boolean efetuarCheckIn(Reserva reserva, Endereco endereco, String telefone, LocalDateTime chegada){
+    private Boolean adicionarDocumento(Reserva reserva, Documento documento){
+        Documento doc = new Documento(reserva.getHospedePrincipal().getInfosBasicas(), documento.getNomePai(), documento.getNomeMae(), documento.getDataNascimento(), documento.getNacionalidade());
+        reserva.getHospedePrincipal().setInfosBasicas(doc);
+        if(reserva.getHospedePrincipal().hasDocumento(reserva.getHospedePrincipal().getInfosBasicas())){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean efetuarCheckIn(Reserva reserva, Endereco endereco, Documento documento,String telefone, LocalDateTime chegada){
         if(reserva.getHospedePrincipal() instanceof Hospede == false){
             if(chegada.isAfter(reserva.getCheckIn()) && chegada.isBefore(reserva.getCheckOut())){
+                reserva.setHorarioChegada(chegada);
+                adicionarDocumento(reserva, documento);
                 Hospede hospede = new Hospede(reserva.getHospedePrincipal(), endereco, telefone);
                 reserva.setHospedePrincipal(hospede);
                 return true;
@@ -182,13 +192,37 @@ public class HotelService {
         return false;
     }
 
-    public boolean efetuarCheckOut(Reserva reserva){
+    private Acompanhante criarAcompanhante(String nome, InfosBasicas infos){
+        return new Acompanhante(nome, infos);
+    }
+
+    public void cadastrarAcompanhante(Reserva reserva, String nome, InfosBasicas infos){
+        reserva.addAcompanhantes(criarAcompanhante(nome, infos));
+    }
+
+    public boolean efetuarCheckOut(Reserva reserva, TipoPagamento tipoPagamento, LocalDateTime saida){
         if(reserva.getReservaAtiva()){
-            Cliente cliente = new Cliente(reserva.getHospedePrincipal().getNome(),reserva.getHospedePrincipal().getDocumento(), reserva.getHospedePrincipal().getInfoLogin());
+            Cliente cliente = new Cliente(reserva.getHospedePrincipal().getNome(),reserva.getHospedePrincipal().getInfosBasicas(), reserva.getHospedePrincipal().getInfoLogin());
+            reserva.setTipoPagamento(tipoPagamento);
             reserva.setHospedePrincipal(cliente);
+            reserva.setHorarioSaida(saida);
             return true;
         }
         return false;
+    }
+
+    public void efetuarPagamento(Reserva reserva, String nome, String numero, int cvv, int mesValidade, int anoValidade){
+        reserva.setPagamentoCartao(nome, numero, cvv, mesValidade, anoValidade);
+    }
+
+    public void efetuarPagamento(Reserva reserva, double valor){
+        LocalDate dataValidade =  reserva.getCheckOut().toLocalDate();
+        dataValidade.plusDays(30);
+        reserva.setPagamentoBoleto(dataValidade, valor);
+    }
+
+    public void efetuarPagamento(Reserva reserva, String nomeBeneficiario){
+        reserva.setPagamentoCheque(nomeBeneficiario);
     }
 
     public ArrayList<Reserva> getReservasAtivas(){
@@ -222,5 +256,6 @@ public class HotelService {
         }
         return null;
     }
+
 
 }
