@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class Reserva {
 
+    private String codigo;
     private Cliente hospedePrincipal;
     private int qtdAcompanhantes;
     private ArrayList<Acompanhante> acompanhantes;
@@ -31,7 +32,7 @@ public class Reserva {
 
 
 
-    public Reserva(Cliente hospedePrincipal, int qtdAcompanhantes,TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut) {
+    public Reserva(String codigo,Cliente hospedePrincipal, int qtdAcompanhantes,TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut) {
         this.hospedePrincipal = hospedePrincipal;
         this.qtdAcompanhantes = qtdAcompanhantes;
         this.tipoQuarto = tipoQuarto;
@@ -44,6 +45,8 @@ public class Reserva {
         calculaPrecoDiaria(tipoQuarto);
 
     }
+
+    public Reserva() {}
 
     public void addAcompanhantes(Acompanhante acompanhante) {
         acompanhantes.add(acompanhante);
@@ -108,6 +111,10 @@ public class Reserva {
 
     public LocalDateTime getHorarioSaida() {
         return horarioSaida;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     public double getPrecoEstadia(){

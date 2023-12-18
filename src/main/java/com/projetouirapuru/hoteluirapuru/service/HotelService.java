@@ -52,7 +52,7 @@ public class HotelService {
 
         Cliente ed = new Cliente("Ed",infos,tes);
 
-        Reserva reserva = criarReserva(ed, 1, TipoQuarto.LUXO,LocalDate.of(2011, Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
+        Reserva reserva = criarReserva("4321",ed, 1, TipoQuarto.LUXO,LocalDate.of(2011, Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
         efetuarReserva(reserva);
         efetuarCheckIn(reserva, endereco, doc,"12334",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)));
     }
@@ -123,14 +123,15 @@ public class HotelService {
         return false;
     }
 
-    public Reserva criarReserva(Cliente hospedePrincipal, int qtdAcompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
-        return new Reserva(hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
+    //RESERVA
+
+    public Reserva criarReserva(String codigo,Cliente hospedePrincipal, int qtdAcompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
+        return new Reserva(codigo,hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
     }
 
 
-
-    public boolean excluirReserva(String email){
-        return removeReserva(getReservas(email).getLast());
+    public boolean excluirReserva(String codigo){
+        return removeReserva();
     }
 
     private boolean removeReserva(Reserva excluir){
@@ -139,18 +140,55 @@ public class HotelService {
 
     public ArrayList<Reserva> getReservas(String email){
         ArrayList<Reserva> reservasUsuario = new ArrayList<>();
-        for (Acomodacao rs: acomodacoes){
-            for (Reserva r: rs.getReservas()){
-                if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
-                    reservasUsuario.add(r);
-                }
+        for (Reserva r : getReservas()){
+            if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
+                reservasUsuario.add(r);
             }
         }
         return reservasUsuario;
     }
+    public Reserva getReserva(String codigo){
+        for (Reserva r : getReservas()){
+            if (r.getAcompanhantes().equals(codigo)){
+                return r;
+            }
+        }
+        return new Reserva();
+    }
+    public ArrayList<Reserva> getReservasQuarto(String codigo){
+        for (Acomodacao ac : getAcomodacoes()){
+            if (ac.getCodigo().equals(codigo)){
+                return ac.getReservas();
+            }
+        }
+        return new ArrayList<Reserva>();
+    }
+    public ArrayList<Reserva> getReservas(){
+        ArrayList<Reserva> reservasRetorno = new ArrayList<>();
+
+        for (Acomodacao rs : acomodacoes){
+            reservasRetorno.addAll(rs.getReservas());
+        }
+
+        return reservasRetorno;
+    }
+    public ArrayList<Reserva> getReservasAtivas(){
+        ArrayList<Reserva> retorno = new ArrayList<>();
+        for(Acomodacao a : acomodacoes){
+            for(Reserva r : a.getReservas()){
+                if(r.getReservaAtiva()){
+                    retorno.add(r);
+                }
+            }
+        }
+        return retorno;
+    }
+
+
     public Hospede criarHospedes(Cliente cliente,Endereco endereco, String telefone){
         return new Hospede(cliente,endereco,telefone);
     }
+
 
     public Endereco criarEndereco( String estado,String cidade,String rua,String numero,String bairro){
         return new Endereco(estado,cidade,rua,numero,bairro);
@@ -224,17 +262,6 @@ public class HotelService {
         reserva.setPagamentoCheque(nomeBeneficiario);
     }
 
-    public ArrayList<Reserva> getReservasAtivas(){
-        ArrayList<Reserva> retorno = new ArrayList<>();
-        for(Acomodacao a : acomodacoes){
-            for(Reserva r : a.getReservas()){
-                if(r.getReservaAtiva()){
-                    retorno.add(r);
-                }
-            }
-        }
-        return retorno;
-    }
 
     public TipoLogin verificaLogin(String email, String senha){
         for(Acomodacao a : acomodacoes){

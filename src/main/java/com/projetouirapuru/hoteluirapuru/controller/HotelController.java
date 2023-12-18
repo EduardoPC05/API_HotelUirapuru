@@ -64,8 +64,11 @@ public class HotelController {
         return hotelService.getReservas(email);
     }
 
-//    @PostMapping("/reservas")
-//    public
+    @PostMapping("/reservas/nova")
+    public Reserva criarReserva(@RequestBody Reserva nova){
+       return criarReserva(nova);
+    }
+
 
     /*
         Rotas destinadas para o CRUD de tipos de quarto
