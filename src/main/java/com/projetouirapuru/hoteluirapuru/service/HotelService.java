@@ -53,11 +53,8 @@ public class HotelService {
         Cliente ed = new Cliente("Ed",infos,tes);
 
         Reserva reserva = criarReserva(ed, 1, TipoQuarto.LUXO,LocalDate.of(2011, Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
-
-        System.out.println(efetuarReserva(reserva));
-
-//        efetuarCheckIn(reserva,endereco,doc,"12334",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)));
-
+        efetuarReserva(reserva);
+        efetuarCheckIn(reserva, endereco, doc,"12334",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)));
     }
 
     public boolean criarAcomodacao(String andar, String num, String descricao, TipoQuarto tipoQ){
@@ -113,11 +110,6 @@ public class HotelService {
     }
 
 
-
-    public Reserva criarReserva(Cliente hospedePrincipal, int qtdAcompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
-        return new Reserva(hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
-    }
-
     public boolean efetuarReserva(Reserva nova){
         ArrayList<Acomodacao> acomodacoes = getAcomodacoesPorTipo(nova.getTipoQuarto());
 
@@ -130,6 +122,12 @@ public class HotelService {
 
         return false;
     }
+
+    public Reserva criarReserva(Cliente hospedePrincipal, int qtdAcompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
+        return new Reserva(hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
+    }
+
+
 
     public boolean excluirReserva(String email){
         return removeReserva(getReservas(email).getLast());
@@ -178,6 +176,7 @@ public class HotelService {
         }
         return false;
     }
+
 
     public boolean efetuarCheckIn(Reserva reserva, Endereco endereco, Documento documento,String telefone, LocalDateTime chegada){
         if(reserva.getHospedePrincipal() instanceof Hospede == false){
