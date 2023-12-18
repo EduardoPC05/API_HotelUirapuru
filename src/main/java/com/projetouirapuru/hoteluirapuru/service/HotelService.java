@@ -3,8 +3,11 @@ package com.projetouirapuru.hoteluirapuru.service;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Acompanhante;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Cliente;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.TipoDocumento;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.funcionario.Funcionario;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
@@ -12,6 +15,7 @@ import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 
 public class HotelService {
@@ -36,11 +40,27 @@ public class HotelService {
         acomodacoes.add(teste2);
         acomodacoes.add(teste3);
 
+        Endereco endereco = new Endereco("CE","Fortaleza","123123","Rua das avenidas","123");
+        Documento doc = new Documento("Eduardo", "Jucá", LocalDate.of(1999, Month.JANUARY, 1), "br", "123", TipoDocumento.CPF);
+
+        InfoLogin tes = new InfoLogin("@teste","123", TipoLogin.ADMINISTRADOR);
+
+        Cliente ed = new Cliente("Ed",doc,tes);
+
+        Acompanhante e1 = new Acompanhante("Au",doc);
+
+        ArrayList<Acompanhante> a = new ArrayList<Acompanhante>();
+        a.add(e1);
+        Reserva reserva = criarReserva(ed,a, TipoQuarto.LUXO,LocalDate.of(2011,Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
+
+        System.out.println(efetuarReserva(reserva));
+
+
     }
 
-    public ArrayList<Reserva> getReversasAtivas() {
-        return reversasAtivas;
-    }
+//    public ArrayList<Reserva> getReversasAtivas() {
+//        return reversasAtivas;
+//    }
 
     public ArrayList<Funcionario> getFuncionarios() {
         return funcionarios;
@@ -104,7 +124,6 @@ public class HotelService {
 
     public boolean efetuarReserva(Reserva nova){
         ArrayList<Acomodacao> acomodacoes = getAcomodacoesPorTipo(nova.getTipoQuarto());
-
         for(Acomodacao acomodacao: acomodacoes) {
             if(acomodacao.verificaReserva(nova)){
                 acomodacao.addReserva(nova);
