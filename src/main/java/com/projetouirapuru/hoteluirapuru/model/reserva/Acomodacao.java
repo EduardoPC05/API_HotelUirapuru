@@ -28,6 +28,7 @@ public class Acomodacao {
         setQtdpessoas(tipoQuarto);
     }
 
+    public Acomodacao(){};
     private void calculaPrecoDiaria(TipoQuarto tipoQuarto){
         switch (tipoQuarto){
             case NORMAL:

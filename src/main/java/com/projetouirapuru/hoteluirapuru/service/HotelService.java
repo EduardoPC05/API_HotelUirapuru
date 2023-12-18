@@ -38,10 +38,15 @@ public class HotelService {
 
     }
 
-    public boolean criarAcomodacao(String andar, String num, String descricao, TipoQuarto tipoQ){
-        Acomodacao quarto = new Acomodacao(andar,num,descricao,tipoQ);
-        return addAcomodacao(quarto);
+    public ArrayList<Reserva> getReversasAtivas() {
+        return reversasAtivas;
     }
+
+    public ArrayList<Funcionario> getFuncionarios() {
+        return funcionarios;
+    }
+
+
     public boolean removerAcomodacao(Acomodacao quarto){
         //TODO
         //Fazer verificações referentes a debitos;
@@ -54,6 +59,14 @@ public class HotelService {
     public ArrayList<Acomodacao> getAcomodacoes(){
         return this.acomodacoes;
     }
+    public Acomodacao getAcomodacao(String codigo){
+        for (Acomodacao i : getAcomodacoes()){
+            if (i.getCodigo().equals(codigo)){
+                return i;
+            }
+        }
+        return new Acomodacao();
+    }
     public Acomodacao getAcomodacaoPorTipo(TipoQuarto tipoQuarto){
         for (Acomodacao acomodacao: acomodacoes) {
             if(acomodacao.getTipoQuarto() == tipoQuarto){
@@ -62,13 +75,19 @@ public class HotelService {
         }
         return null;
     }
-    private boolean addAcomodacao(Acomodacao quarto){
+    public boolean addAcomodacao(Acomodacao quarto){
         return this.acomodacoes.add(quarto);
     }
     private boolean removeAcomodacao(Acomodacao quarto){
         return this.acomodacoes.remove(quarto);
     }
 
+    private Acomodacao editaAcomodacao(Acomodacao novo, int index){
+        return this.acomodacoes.set(index,novo);
+    }
+    public Acomodacao editarAcomodacao(Acomodacao novo,String codigo){
+        return editaAcomodacao(novo, this.acomodacoes.indexOf(getAcomodacao(codigo)));
+    }
     public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
         ArrayList<Acomodacao> acomodacoesPorTipo = new ArrayList<Acomodacao>();
         for (Acomodacao acomodacao : acomodacoes) {
@@ -186,4 +205,5 @@ public class HotelService {
         }
         return null;
     }
+
 }
