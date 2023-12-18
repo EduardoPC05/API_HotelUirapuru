@@ -12,6 +12,7 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
+import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckIn;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 import com.projetouirapuru.hoteluirapuru.model.reserva.pagamento.TipoPagamento;
 
@@ -49,22 +50,22 @@ public class HotelService {
         Documento doc = new Documento(infos,"Eduardo", "Jucá", LocalDate.of(1999, Month.JANUARY, 1), "br");
 
         InfoLogin tes = new InfoLogin("@teste","123", TipoLogin.ADMINISTRADOR);
+        InfoLogin tes2 = new InfoLogin("@lusca","123", TipoLogin.CLIENTE);
+
 
         Cliente ed = new Cliente("Ed",infos,tes);
+        Cliente lusca = new Cliente("Lusca",infos,tes2);
 
         Reserva reserva = criarReserva("4321",ed, 1, TipoQuarto.LUXO,LocalDate.of(2011, Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
+        Reserva reserva2 = criarReserva("433331", lusca, 0, TipoQuarto.LUXO,LocalDate.of(2012, Month.OCTOBER,20), LocalDate.of(2012,Month.OCTOBER,30));
         efetuarReserva(reserva);
-        efetuarCheckIn(reserva, endereco, doc,"12334",LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)));
-    }
+        efetuarReserva(reserva2);
 
-    public boolean criarAcomodacao(String andar, String num, String descricao, TipoQuarto tipoQ){
-        Acomodacao quarto = new Acomodacao(andar,num,descricao,tipoQ);
-        return addAcomodacao(quarto);
-    }
-    public boolean removerAcomodacao(Acomodacao quarto){
-        //TODO
-        //Fazer verificações referentes a debitos;
-        return removeAcomodacao(quarto);
+        ReservaCheckIn reservaCheckIn = new ReservaCheckIn(reserva, endereco, "123123", LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)), doc);
+        ReservaCheckIn reservaCheckIn2 = new ReservaCheckIn(reserva2, endereco, "123123", LocalDateTime.of(LocalDate.of(2012,Month.OCTOBER,23),LocalTime.of(14,0,0)), doc);
+
+        efetuarCheckIn(reservaCheckIn);
+        efetuarCheckIn(reservaCheckIn2);
     }
     public boolean removerAcomodacao(String codigo){
         return this.acomodacoes.removeIf(i -> i.getCodigo().equals(codigo));
@@ -88,9 +89,6 @@ public class HotelService {
     public boolean addAcomodacao(Acomodacao quarto){
         return this.acomodacoes.add(quarto);
     }
-    private boolean removeAcomodacao(Acomodacao quarto){
-        return this.acomodacoes.remove(quarto);
-    }
 
     public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
         ArrayList<Acomodacao> acomodacoesPorTipo = new ArrayList<Acomodacao>();
@@ -109,6 +107,7 @@ public class HotelService {
         return acomodacoes.set(acomodacoes.indexOf(getAcomodacao(codigo)),nova);
     }
 
+    //----------------------------------------------------------------------------------------
 
     public boolean efetuarReserva(Reserva nova){
         ArrayList<Acomodacao> acomodacoes = getAcomodacoesPorTipo(nova.getTipoQuarto());
@@ -129,9 +128,17 @@ public class HotelService {
         return new Reserva(codigo,hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
     }
 
+    public Reserva criarReserva(Reserva reservaNova) {
+        	return new Reserva(reservaNova.getCodigo(), reservaNova.getHospedePrincipal(),
+                    reservaNova.getQtdAcompanhantes(), reservaNova.getTipoQuarto(),
+                    LocalDate.of(reservaNova.getCheckIn().getYear(), reservaNova.getCheckIn().getMonth(),
+                            reservaNova.getCheckIn().getDayOfMonth()),
+                    LocalDate.of(reservaNova.getCheckOut().getYear(), reservaNova.getCheckOut().getMonth(),
+                            reservaNova.getCheckOut().getDayOfMonth()));
+    }
 
     public boolean excluirReserva(String codigo){
-        return removeReserva();
+        return removeReserva(getReserva(codigo));
     }
 
     private boolean removeReserva(Reserva excluir){
@@ -216,13 +223,13 @@ public class HotelService {
     }
 
 
-    public boolean efetuarCheckIn(Reserva reserva, Endereco endereco, Documento documento,String telefone, LocalDateTime chegada){
-        if(reserva.getHospedePrincipal() instanceof Hospede == false){
-            if(chegada.isAfter(reserva.getCheckIn()) && chegada.isBefore(reserva.getCheckOut())){
-                reserva.setHorarioChegada(chegada);
-                adicionarDocumento(reserva, documento);
-                Hospede hospede = new Hospede(reserva.getHospedePrincipal(), endereco, telefone);
-                reserva.setHospedePrincipal(hospede);
+    public boolean efetuarCheckIn(ReservaCheckIn reserva){
+        if(reserva.getReserva().getHospedePrincipal() instanceof Hospede == false){
+            if(reserva.getChegada().isAfter(reserva.getReserva().getCheckIn()) && reserva.getChegada().isBefore(reserva.getReserva().getCheckOut())){
+                reserva.getReserva().setHorarioChegada(reserva.getChegada());
+                adicionarDocumento(reserva.getReserva(), reserva.getDocumento());
+                Hospede hospede = new Hospede(reserva.getReserva().getHospedePrincipal(), reserva.getEndereco(), reserva.getTelefone());
+                reserva.getReserva().setHospedePrincipal(hospede);
                 return true;
             }
         }

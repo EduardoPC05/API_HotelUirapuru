@@ -1,8 +1,10 @@
 package com.projetouirapuru.hoteluirapuru.controller;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
+import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckIn;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
@@ -64,9 +66,17 @@ public class HotelController {
         return hotelService.getReservas(email);
     }
 
-    @PostMapping("/reservas/nova")
+    @PostMapping("/reservas")
     public Reserva criarReserva(@RequestBody Reserva nova){
-       return criarReserva(nova);
+       return hotelService.criarReserva(nova);
+    }
+
+    @PostMapping("/reservas/checkin")
+    public Reserva fazerCheckIn(@RequestBody ReservaCheckIn reserva) {
+        if(hotelService.efetuarCheckIn(reserva)) {
+            return reserva.getReserva();
+        }
+        return new Reserva();
     }
 
 

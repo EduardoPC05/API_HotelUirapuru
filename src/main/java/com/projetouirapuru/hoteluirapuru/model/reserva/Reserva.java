@@ -32,7 +32,7 @@ public class Reserva {
 
 
 
-    public Reserva(String codigo,Cliente hospedePrincipal, int qtdAcompanhantes,TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut) {
+    public Reserva(String codigo, Cliente hospedePrincipal, int qtdAcompanhantes,TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut) {
         this.hospedePrincipal = hospedePrincipal;
         this.qtdAcompanhantes = qtdAcompanhantes;
         this.tipoQuarto = tipoQuarto;
