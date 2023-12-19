@@ -23,4 +23,6 @@ public class ReservaCheckInCheckOut {
     public LocalDateTime getData() {
         return data;
     }
+
+
 }

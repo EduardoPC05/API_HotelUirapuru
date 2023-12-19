@@ -252,38 +252,47 @@ public class HotelService {
             }
             return retorno;
         }
-        public Reserva getReserva(String codigoAcomodocacao){
+        public ArrayList<Reserva> getReservas(String email){
+            ArrayList<Reserva> retorno = new ArrayList<>();
             for (Reserva r : getReservas()){
-                if (r.getCodigoAcomodacao().equals(codigoAcomodocacao)){
+                if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
+                    retorno.add(r);
+                }
+            }
+            return retorno;
+        }
+        public Reserva getReserva(String email){
+            for (Reserva r : getReservas()){
+                if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
                     return r;
                 }
             }
-            return  new Reserva();
+            return new Reserva();
         }
 
         /*
             EDITA RESERVA
         */
 
-        public Reserva editaReserva(String codigoA,Reserva nova){
-           getReserva(codigoA).setAcompanhantes(nova.getAcompanhantes());
-           getReserva(codigoA).setCheckIn(nova.getCheckIn());
-           getReserva(codigoA).setCheckOut(nova.getCheckOut());
-           getReserva(codigoA).setTipoQuarto(nova.getTipoQuarto());
-           getReserva(codigoA).setAcompanhantes(nova.getAcompanhantes());
-           getReserva(codigoA).setHospedePrincipal(nova.getHospedePrincipal());
-           getReserva(codigoA).setDataChegada(nova.getDataChegada());
-           getReserva(codigoA).setDataSaida(nova.getDataSaida());
-           getReserva(codigoA).setCodigoAcomodacao(nova.getCodigoAcomodacao());
-           return getReserva(codigoA);
+        public Reserva editaReserva(String email,Reserva nova){
+           getReserva(email).setAcompanhantes(nova.getAcompanhantes());
+           getReserva(email).setCheckIn(nova.getCheckIn());
+           getReserva(email).setCheckOut(nova.getCheckOut());
+           getReserva(email).setTipoQuarto(nova.getTipoQuarto());
+           getReserva(email).setAcompanhantes(nova.getAcompanhantes());
+           getReserva(email).setHospedePrincipal(nova.getHospedePrincipal());
+           getReserva(email).setDataChegada(nova.getDataChegada());
+           getReserva(email).setDataSaida(nova.getDataSaida());
+           getReserva(email).setCodigoAcomodacao(nova.getCodigoAcomodacao());
+           return getReserva(email);
         }
 
         /*
            DELETA RESERVA
         */
 
-        public Reserva excluiReserva(String codigoA){
-            return getReservas().remove(getReservas().indexOf(getReserva(codigoA)));
+        public Reserva excluiReserva(String email){
+            return getReservas().remove(getReservas().indexOf(getReserva(email)));
         }
 
         /*

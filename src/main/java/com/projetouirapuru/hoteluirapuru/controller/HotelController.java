@@ -166,23 +166,18 @@ public class HotelController {
         return hotelService.getReservasAtivas();
     }
 
-    @GetMapping("/reservas/{codigo}")
-    public Reserva getReservaCodigo(@PathVariable String codigo){
-        return  hotelService.getReserva(codigo);
+    @GetMapping("/reservas/{email}")
+    public Reserva getReservaCodigo(@PathVariable String email){
+        return  hotelService.getReserva(email);
     }
-    @PutMapping("/reservas/{codigo}")
-    public Reserva editaReserva(@PathVariable String codigo, @RequestBody Reserva nova){
-        return hotelService.editaReserva(codigo,nova);
+    @PutMapping("/reservas/{email}")
+    public Reserva editaReserva(@PathVariable String email, @RequestBody Reserva nova){
+        return hotelService.editaReserva(email,nova);
     }
-    @DeleteMapping("/reservas/{codigo}")
-    public Reserva excluiReserva(@PathVariable String codigo){
-        return hotelService.excluiReserva(codigo);
+    @DeleteMapping("/reservas/{email}")
+    public Reserva excluiReserva(@PathVariable String email){
+        return hotelService.excluiReserva(email);
     }
-
-    /*
-        ROTAS FUNCIONARIOS
-    */
-
 
 
     /*
@@ -216,11 +211,6 @@ public class HotelController {
     public LocalDateTime format(){
         return getReservas().getFirst().getCheckIn();
     }
-
-
-
-
-
 
 
 
