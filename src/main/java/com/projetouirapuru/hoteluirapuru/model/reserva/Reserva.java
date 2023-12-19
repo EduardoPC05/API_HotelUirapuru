@@ -73,7 +73,9 @@ public class Reserva {
     }
 
     public double getPrecoEstadia(){
-
+           if (isAtiva()){
+               getDataSaida()  - getCheckIn()
+           }
         // (dia da saida - dia da checkin) -> dia saida < (dia checkout - dia checkin) -> * preco do quarto
 
         return -1;
@@ -101,6 +103,7 @@ public class Reserva {
 
     public void setCheckIn(LocalDateTime checkIn) {
         this.checkIn = checkIn;
+        isAtiva();
     }
 
     public void setCheckOut(LocalDateTime checkOut) {

@@ -319,8 +319,10 @@ public class HotelService {
             return null;
         }
 
-//        public boolean checkIn(){
-//
-//        }
+        public boolean checkIn(Reserva reserva,LocalDateTime chegada){
+            reserva.setCheckIn(chegada);
+            return true;
+
+        }
 
 }
