@@ -386,7 +386,7 @@ public class HotelService {
                 }
             }
 
-            return null;
+            return new Pessoa() {};
         }
 
         public boolean checkIn(Reserva reserva,LocalDateTime chegada){
