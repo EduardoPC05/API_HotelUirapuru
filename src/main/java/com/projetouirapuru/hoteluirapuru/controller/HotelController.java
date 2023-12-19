@@ -9,6 +9,8 @@ import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -184,6 +186,20 @@ public class HotelController {
         return hotelService.verificaLogin(email,senha);
     }
 
+    @PostMapping("/checkIn")
+    public boolean checkIn(@RequestBody Reserva reserva,@RequestBody LocalDateTime chegada){
+        return hotelService.checkIn(reserva,chegada);
+    }
+
+    @PostMapping("/checkOut")
+    public double checkOut(@RequestBody Reserva reserva,@RequestBody LocalDateTime saida){
+        return hotelService.checkOut(reserva,saida);
+    }
+
+    @GetMapping("/format")
+    public LocalDateTime format(){
+        return getReservas().getFirst().getCheckIn();
+    }
 
 
 

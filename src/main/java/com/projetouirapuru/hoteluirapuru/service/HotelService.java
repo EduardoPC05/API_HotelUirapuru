@@ -86,7 +86,7 @@ public class HotelService {
 
         Documento docCaio = new Documento("PAICAIO","MAECAIO",LocalDate.of(2005,Month.MARCH,23),"Brasiliero",TipoDocumento.PASSAPORTE,"PASSAPORTECAIO");
         Endereco endCaio = new Endereco("SP","IBITINGA","ROSEIRA","900","JDROSEIRA");
-        InfoLogin infCaio = new InfoLogin("caio@TESTE","SENHA1234/",TipoLogin.HOSPEDE);
+        InfoLogin infCaio = new InfoLogin("caio@TESTE","SENHA1234",TipoLogin.HOSPEDE);
         Hospede caio = new Hospede("CAIO L",docCaio,endCaio,"9989999",infCaio);
         criaHospede(caio);
 
@@ -96,6 +96,7 @@ public class HotelService {
 
         criarReserva(rEduardo);
         criarReserva(rCaio);
+
 
 
     }
@@ -225,7 +226,8 @@ public class HotelService {
         */
             public boolean criarReserva(Reserva nova){
             if (verficaReservaH(nova)){
-                return this.reservas.add(nova);
+               nova.setPrecoDiaria(getAcomodacao(nova.getCodigoAcomodacao()).getPrecoDiaria());
+               return this.reservas.add(nova);
             }
             return false;
         }
@@ -308,7 +310,6 @@ public class HotelService {
                     }
                 }
             }
-
             for(Funcionario f : funcionarios){
                 if(f.getInfoLogin().getEmail().equals(email)){
                     if(f.getInfoLogin().getSenha().equals(senha)){
@@ -320,9 +321,14 @@ public class HotelService {
         }
 
         public boolean checkIn(Reserva reserva,LocalDateTime chegada){
-            reserva.setCheckIn(chegada);
+            reserva.setDataChegada(chegada);
             return true;
-
         }
+
+        public double checkOut(Reserva reserva, LocalDateTime saida){
+            reserva.setDataSaida(saida);
+            return reserva.getPrecoEstadia();
+        }
+
 
 }

@@ -8,7 +8,9 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+
 
 public class Reserva {
 
@@ -20,7 +22,7 @@ public class Reserva {
     private LocalDateTime checkOut;
     private LocalDateTime dataChegada;
     private LocalDateTime dataSaida;
-    private double precoEstadia;
+    private double precoDiaria;
 
     public Reserva(String codigoAcomodacao, Hospede hospedePrincipal, ArrayList<Acompanhante> acompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut) {
         this.codigoAcomodacao = codigoAcomodacao;
@@ -72,13 +74,40 @@ public class Reserva {
         this.dataSaida = dataSaida;
     }
 
-    public double getPrecoEstadia(){
-           if (isAtiva()){
-               getDataSaida()  - getCheckIn()
-           }
-        // (dia da saida - dia da checkin) -> dia saida < (dia checkout - dia checkin) -> * preco do quarto
-
+    /*
+        if(getHorarioChegada() != null && getHorarioSaida() != null){
+            long retorno = ChronoUnit.DAYS.between(getHorarioChegada(), getHorarioSaida());
+            long periodoCorreto = ChronoUnit.DAYS.between(getCheckIn(), getCheckOut());
+            double valor = 0;
+            if(retorno > periodoCorreto){
+                valor = retorno;
+            }else {
+                valor = periodoCorreto;
+            }
+            valor *= getPrecoDiaria(acomodacao);
+            return valor;
+        }
         return -1;
+    */
+    public double getPrecoEstadia(){
+        // (dia da saida - dia da checkin) -> dia saida < (dia checkout - dia checkin) -> * preco do quarto
+        long diasC = getDiarias(getDataSaida(),getDataChegada());
+        long dias = getDiarias(getCheckOut(),getCheckIn());
+
+        if (diasC != (-0) && dias != (-0)){
+            double valor = Math.max(diasC, dias);
+            valor *= getPrecoDiaria();
+            return valor;
+        }
+        return -1;
+    }
+    private long getDiarias(LocalDateTime antes, LocalDateTime depois){
+        if (antes != null){
+            if (depois != null){
+                return ChronoUnit.DAYS.between(antes,depois);
+            }
+        }
+        return -0;
     }
 
     public boolean isAtiva(){
@@ -102,12 +131,18 @@ public class Reserva {
     }
 
     public void setCheckIn(LocalDateTime checkIn) {
-        this.checkIn = checkIn;
-        isAtiva();
+        this.checkOut = checkIn;
     }
 
     public void setCheckOut(LocalDateTime checkOut) {
         this.checkOut = checkOut;
     }
 
+    public void setPrecoDiaria(double precoEstadia) {
+        this.precoDiaria = precoEstadia;
+    }
+
+    public double getPrecoDiaria() {
+        return precoDiaria;
+    }
 }
