@@ -15,6 +15,7 @@ public class Funcionario extends Pessoa {
         this.infoLogin = infoLogin;
         this.reservaResponsavel = reservaResponsavel;
     }
+    public Funcionario(){};
 
     public InfoLogin getInfoLogin() {
         return infoLogin;
@@ -36,5 +37,13 @@ public class Funcionario extends Pessoa {
     @Override
     public Documento getDocumento() {
         return super.getDocumento();
+    }
+
+    public void setInfoLogin(InfoLogin infoLogin) {
+        this.infoLogin = infoLogin;
+    }
+
+    public void setReservaResponsavel(Reserva reservaResponsavel) {
+        this.reservaResponsavel = reservaResponsavel;
     }
 }

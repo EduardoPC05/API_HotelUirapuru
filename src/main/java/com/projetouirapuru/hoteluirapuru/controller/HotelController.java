@@ -1,5 +1,6 @@
 package com.projetouirapuru.hoteluirapuru.controller;
 
+import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
@@ -179,6 +180,12 @@ public class HotelController {
     }
 
     /*
+        ROTAS FUNCIONARIOS
+    */
+
+
+
+    /*
         PRINCIPAIS METEDOS
     */
 
@@ -194,7 +201,7 @@ public class HotelController {
 
     }
     @GetMapping("/login/{email}/{senha}")
-    public TipoLogin verficaLogin(@PathVariable String email, @PathVariable String senha){
+    public Pessoa verficaLogin(@PathVariable String email, @PathVariable String senha){
         return hotelService.verificaLogin(email,senha);
     }
     @PostMapping("/checkIn")

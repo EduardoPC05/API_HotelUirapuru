@@ -1,5 +1,6 @@
 package com.projetouirapuru.hoteluirapuru.service;
 
+import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Acompanhante;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
@@ -11,6 +12,7 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
+import org.slf4j.helpers.FormattingTuple;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -96,6 +98,8 @@ public class HotelService {
 
         criarReserva(rEduardo);
         criarReserva(rCaio);
+
+
 
 
 
@@ -295,6 +299,52 @@ public class HotelService {
         }
 
     /*
+       FUNCIONARIOS
+    */
+
+        /*
+           CRIA FUNCIONARIO
+        */
+
+        public Boolean criaFuncionario(Funcionario novo){
+           return this.funcionarios.add(novo);
+        }
+
+        /*
+            LEITURA DE RESERVAS
+        */
+
+        public ArrayList<Funcionario> getFuncionarios(){
+            return this.funcionarios;
+        }
+        public Funcionario getFuncionario(String nDocumento){
+            for (Funcionario f: getFuncionarios()){
+                if (f.getDocumento().getNumeroDocumento().equals(nDocumento)){
+                    return f;
+                }
+            }
+            return new Funcionario();
+        }
+
+        /*
+           EDITA FUNCIONARIO
+        */
+
+        public Funcionario editaFuncionario(String nDocumento,Funcionario f){
+            getFuncionario(nDocumento).setReservaResponsavel(f.getReservaResponsavel());
+            getFuncionario(nDocumento).setNome(f.getNome());
+            getFuncionario(nDocumento).setInfoLogin(f.getInfoLogin());
+            getFuncionario(nDocumento).setDocumento(f.getDocumento());
+            return getFuncionario(f.getDocumento().getNumeroDocumento());
+        }
+
+        /*
+            DELETA FUNCIONARIO
+        */
+        public boolean excluiFuncionario(String nDocumento){
+            return getFuncionarios().remove(getFuncionario(nDocumento));
+        }
+    /*
         PRINCIPAIS METODOS
     */
         public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
@@ -319,21 +369,23 @@ public class HotelService {
             VALIDAÇÃO DE LOGIN
         */
 
-        public TipoLogin verificaLogin(String email, String senha){
+        public Pessoa verificaLogin(String email, String senha){
+            Hospede h = new Hospede();
             for(Reserva r : getReservas()){
                 if(r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
                     if(r.getHospedePrincipal().getInfoLogin().getSenha().equals(senha)){
-                        return r.getHospedePrincipal().getInfoLogin().getTipoLogin();
+                        return r.getHospedePrincipal();
                     }
                 }
             }
-            for(Funcionario f : funcionarios){
+            for (Funcionario f : getFuncionarios()){
                 if(f.getInfoLogin().getEmail().equals(email)){
                     if(f.getInfoLogin().getSenha().equals(senha)){
-                        return f.getInfoLogin().getTipoLogin();
+                        return f;
                     }
                 }
             }
+
             return null;
         }
 
