@@ -4,6 +4,7 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
+import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckInCheckOut;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
@@ -138,7 +139,7 @@ public class HotelController {
         return hotelService.getAcomodacao(codigo);
     }
     @PutMapping("/acomodacoes/{codigo}")
-    public Acomodacao EditaAcomodacao(@PathVariable String codigo,@RequestBody Acomodacao novo){
+    public Acomodacao EditaAcomodacao(@PathVariable String codigo, @RequestBody Acomodacao novo){
         return hotelService.editaAcomodacao(codigo,novo);
     }
 
@@ -187,13 +188,13 @@ public class HotelController {
     }
 
     @PostMapping("/checkIn")
-    public boolean checkIn(@RequestBody Reserva reserva,@RequestBody LocalDateTime chegada){
-        return hotelService.checkIn(reserva,chegada);
+    public boolean checkIn(@RequestBody ReservaCheckInCheckOut reserva){
+        return hotelService.checkIn(reserva.getReserva(), reserva.getData());
     }
 
     @PostMapping("/checkOut")
-    public double checkOut(@RequestBody Reserva reserva,@RequestBody LocalDateTime saida){
-        return hotelService.checkOut(reserva,saida);
+    public double checkOut(@RequestBody ReservaCheckInCheckOut reserva){
+        return hotelService.checkOut(reserva.getReserva(), reserva.getData());
     }
 
     @GetMapping("/format")
