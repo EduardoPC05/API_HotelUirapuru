@@ -103,9 +103,10 @@ public class Acomodacao {
     }
     public boolean verificaReserva(Reserva nova){
         if(!reservas.isEmpty()) {
-            for (Reserva r : this.reservas){
-                if (r.getTipoQuarto() == nova.getTipoQuarto()){
-                    return !r.getCheckIn().isBefore(nova.getCheckOut()) && !r.getCheckOut().isAfter(nova.getCheckIn());
+            for (Reserva r : getReservas()){
+                if (r.getCheckIn().isBefore(nova.getCheckOut()) &&
+                        r.getCheckOut().isAfter(nova.getCheckIn())) {
+                    return false;
                 }
             }
         }

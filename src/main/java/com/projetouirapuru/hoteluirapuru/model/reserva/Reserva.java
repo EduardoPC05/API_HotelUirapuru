@@ -5,12 +5,14 @@ package com.projetouirapuru.hoteluirapuru.model.reserva;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Acompanhante;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Reserva {
 
-    private String codigo;
+    private String codigoAcomodacao;
     private Hospede hospedePrincipal;
     private ArrayList<Acompanhante> acompanhantes;
     private TipoQuarto tipoQuarto;
@@ -20,17 +22,18 @@ public class Reserva {
     private LocalDateTime dataSaida;
     private double precoEstadia;
 
-    public Reserva(String codigo, Hospede hospedePrincipal, ArrayList<Acompanhante> acompanhantes, TipoQuarto tipoQuarto, LocalDateTime checkIn, LocalDateTime checkOut) {
-        this.codigo = codigo;
+    public Reserva(String codigoAcomodacao, Hospede hospedePrincipal, ArrayList<Acompanhante> acompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut) {
+        this.codigoAcomodacao = codigoAcomodacao;
         this.hospedePrincipal = hospedePrincipal;
         this.acompanhantes = acompanhantes;
         this.tipoQuarto = tipoQuarto;
-        this.checkIn = checkIn;
-        this.checkOut = checkOut;
+        this.checkIn = LocalDateTime.of(checkIn, LocalTime.of(12,0,0));
+        this.checkOut = LocalDateTime.of(checkOut,LocalTime.of(9,0,0));
     }
+    public Reserva(){}
 
-    public String getCodigo() {
-        return codigo;
+    public String getCodigoAcomodacao() {
+        return codigoAcomodacao;
     }
 
     public Hospede getHospedePrincipal() {
@@ -76,5 +79,32 @@ public class Reserva {
         return -1;
     }
 
+    public boolean isAtiva(){
+        return getDataChegada() == null;
+    }
+
+    public void setCodigoAcomodacao(String codigoAcomodacao) {
+        this.codigoAcomodacao = codigoAcomodacao;
+    }
+
+    public void setHospedePrincipal(Hospede hospedePrincipal) {
+        this.hospedePrincipal = hospedePrincipal;
+    }
+
+    public void setAcompanhantes(ArrayList<Acompanhante> acompanhantes) {
+        this.acompanhantes = acompanhantes;
+    }
+
+    public void setTipoQuarto(TipoQuarto tipoQuarto) {
+        this.tipoQuarto = tipoQuarto;
+    }
+
+    public void setCheckIn(LocalDateTime checkIn) {
+        this.checkIn = checkIn;
+    }
+
+    public void setCheckOut(LocalDateTime checkOut) {
+        this.checkOut = checkOut;
+    }
 
 }

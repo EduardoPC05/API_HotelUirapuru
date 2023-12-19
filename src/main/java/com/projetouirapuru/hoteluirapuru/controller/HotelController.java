@@ -2,6 +2,7 @@ package com.projetouirapuru.hoteluirapuru.controller;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
+import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
 import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 
@@ -142,6 +143,35 @@ public class HotelController {
         return hotelService.excluiAcomodacao(codigo);
     }
 
+    /*
+        ROTAS RESERVAS
+    */
+
+    @PostMapping("/reservas")
+    public boolean criarReserva(@RequestBody Reserva nova){
+        return  hotelService.criarReserva(nova);
+    }
+    @GetMapping("/reservas")
+    public ArrayList<Reserva> getReservas(){
+        return hotelService.getReservas();
+    }
+    @GetMapping("/reservas/ativas")
+    public ArrayList<Reserva> getReservasAtivas(){
+        return hotelService.getReservasAtivas();
+    }
+
+    @GetMapping("/reservas/{codigo}")
+    public Reserva getReservaCodigo(@PathVariable String codigo){
+        return  hotelService.getReserva(codigo);
+    }
+    @PutMapping("/reservas/{codigo}")
+    public Reserva editaReserva(@PathVariable String codigo, @RequestBody Reserva nova){
+        return hotelService.editaReserva(codigo,nova);
+    }
+    @DeleteMapping("/reservas/{codigo}")
+    public Reserva excluiReserva(@PathVariable String codigo){
+        return hotelService.excluiReserva(codigo);
+    }
 
 
 
