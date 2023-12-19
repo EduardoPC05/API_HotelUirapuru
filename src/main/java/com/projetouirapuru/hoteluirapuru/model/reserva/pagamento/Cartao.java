@@ -2,7 +2,7 @@ package com.projetouirapuru.hoteluirapuru.model.reserva.pagamento;
 
 import java.time.LocalDate;
 
-public class Cartao extends MetodoPagamento{
+public class Cartao {
     private String nome;
     private String numero;
     private int cvv;

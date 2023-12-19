@@ -1,16 +1,18 @@
 package com.projetouirapuru.hoteluirapuru.controller;
 
+import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
-import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckIn;
+import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckInCheckOut;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Month;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -20,12 +22,13 @@ public class HotelController {
 
     HotelService hotelService = new HotelService();
 
-
-
-
     /*
         Rotas destinadas para CRUD de acomodacoes
      */
+
+    /*
+
+
     @GetMapping("/acomodacoes")
     public ArrayList<Acomodacao> getAcomodacoes() {
         return hotelService.getAcomodacoes();
@@ -57,6 +60,10 @@ public class HotelController {
     /*
        Rotas destinadas para CRUD de reservas
     */
+
+    /*
+
+
     @GetMapping("/reservas")
     public ArrayList<Reserva> getReservas(){
         return hotelService.getReservasAtivas();
@@ -79,14 +86,134 @@ public class HotelController {
         return new Reserva();
     }
 
-
+     */
     /*
         Rotas destinadas para o CRUD de tipos de quarto
-     */
+
     @GetMapping("/tiposquartos")
     public ArrayList<Acomodacao> getTiposQuartosDisponiveis(){
         return hotelService.getTipoQuartosDisponiveis();
     }
+
+     */
+
+
+    /*
+        ROTAS HOSPEDES
+    */
+    @PostMapping("/hospedes")
+    public boolean criaHospede(@RequestBody Hospede novo){
+        return hotelService.criaHospede(novo);
+    }
+    @GetMapping("/hospedes")
+    public ArrayList<Hospede> getHospedes(){
+        return hotelService.getHospedes();
+    }
+    @GetMapping("/hospedes/{documento}")
+    public Hospede getHospede(@PathVariable String documento){
+        return hotelService.getHospedePorDocumento(documento);
+    }
+    @PutMapping("/hospedes/{documento}")
+    public Hospede editaHospede(@PathVariable String documento,@RequestBody Hospede novo){
+        return hotelService.editaHospede(documento,novo);
+    }
+    @DeleteMapping("/hospedes/{codigo}")
+    public Hospede deletaHospede(@PathVariable String codigo){
+        return hotelService.excluiHospede(codigo);
+    }
+
+    /*
+        ROTAS ACOMODACOES
+    */
+
+    @PostMapping("/acomodacoes")
+    public Boolean criaAcomodacao(@RequestBody Acomodacao novo){
+        return hotelService.criaAcomodacao(novo);
+    }
+    @GetMapping("/acomodacoes")
+    public ArrayList<Acomodacao> getAcomodacoes(){
+        return hotelService.getAcomodacoes();
+    }
+
+    @GetMapping("/acomodacoes/{codigo}")
+    public Acomodacao getAcomodacao(@PathVariable String codigo){
+        return hotelService.getAcomodacao(codigo);
+    }
+    @PutMapping("/acomodacoes/{codigo}")
+    public Acomodacao EditaAcomodacao(@PathVariable String codigo, @RequestBody Acomodacao novo){
+        return hotelService.editaAcomodacao(codigo,novo);
+    }
+
+    @DeleteMapping("/acomodacoes/{codigo}")
+    public Acomodacao excluiAcomodacao(@PathVariable String codigo){
+        return hotelService.excluiAcomodacao(codigo);
+    }
+
+    /*
+        ROTAS RESERVAS
+    */
+
+    @PostMapping("/reservas")
+    public boolean criarReserva(@RequestBody Reserva nova){
+        return  hotelService.criarReserva(nova);
+    }
+    @GetMapping("/reservas")
+    public ArrayList<Reserva> getReservas(){
+        return hotelService.getReservas();
+    }
+    @GetMapping("/reservas/ativas")
+    public ArrayList<Reserva> getReservasAtivas(){
+        return hotelService.getReservasAtivas();
+    }
+
+    @GetMapping("/reservas/{email}")
+    public Reserva getReservaCodigo(@PathVariable String email){
+        return  hotelService.getReserva(email);
+    }
+    @PutMapping("/reservas/{email}")
+    public Reserva editaReserva(@PathVariable String email, @RequestBody Reserva nova){
+        return hotelService.editaReserva(email,nova);
+    }
+    @DeleteMapping("/reservas/{email}")
+    public Reserva excluiReserva(@PathVariable String email){
+        return hotelService.excluiReserva(email);
+    }
+
+
+    /*
+        PRINCIPAIS METEDOS
+    */
+
+    @GetMapping("/tipoquarto")
+    public ArrayList<Acomodacao> gettipoquarto(){
+        ArrayList<Acomodacao> retorno = new ArrayList<>();
+
+        for (TipoQuarto tq : TipoQuarto.values()){
+            retorno.add(hotelService.getAcomodacaoPorTipo(tq));
+        }
+
+        return retorno;
+
+    }
+    @GetMapping("/login/{email}/{senha}")
+    public Pessoa verficaLogin(@PathVariable String email, @PathVariable String senha){
+        return hotelService.verificaLogin(email,senha);
+    }
+    @PostMapping("/checkIn")
+    public boolean checkIn(@RequestBody ReservaCheckInCheckOut reserva){
+        return hotelService.checkIn(reserva.getReserva(), reserva.getData());
+    }
+    @PostMapping("/checkOut")
+    public double checkOut(@RequestBody ReservaCheckInCheckOut reserva){
+        return hotelService.checkOut(reserva.getReserva(), reserva.getData());
+    }
+    @GetMapping("/format")
+    public LocalDateTime format(){
+        return getReservas().getFirst().getCheckIn();
+    }
+
+
+
 
 
 }

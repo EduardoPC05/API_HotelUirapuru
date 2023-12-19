@@ -14,6 +14,7 @@ public class Acomodacao {
     private int limiteAdultos;
 
     private int limiteCriancas;
+    private double precoDiaria;
 
 
     public Acomodacao(String andar, String numero, String descricao, TipoQuarto tipoQuarto) {
@@ -22,12 +23,27 @@ public class Acomodacao {
         this.descricao = descricao;
         this.tipoQuarto = tipoQuarto;
         this.reservas = new ArrayList<Reserva>();
+        setPrecoDiaria(tipoQuarto);
         setCodigo(andar, numero);
         setQtdpessoas(tipoQuarto);
     }
-    public Acomodacao(){};
 
+    public Acomodacao() {
+    }
 
+    private void setPrecoDiaria(TipoQuarto tipoQuarto){
+        switch (tipoQuarto){
+            case NORMAL:
+                precoDiaria = 100;
+                break;
+            case SUITE:
+                precoDiaria = 200;
+                break;
+            case LUXO:
+                precoDiaria = 300;
+                break;
+        }
+    }
 
     private void setQtdpessoas(TipoQuarto tipoQuarto){
         switch (tipoQuarto){
@@ -35,11 +51,7 @@ public class Acomodacao {
                 limiteAdultos = 2;
                 limiteCriancas = 1;
                 break;
-            case SUITE:
-                limiteAdultos = 3;
-                limiteCriancas = 2;
-                break;
-            case LUXO:
+            case SUITE, LUXO:
                 limiteAdultos = 3;
                 limiteCriancas = 2;
                 break;
@@ -91,14 +103,53 @@ public class Acomodacao {
     }
     public boolean verificaReserva(Reserva nova){
         if(!reservas.isEmpty()) {
-            for (Reserva r : this.reservas){
-                if (r.getTipoQuarto() == nova.getTipoQuarto()){
-                    return !r.getCheckIn().isBefore(nova.getCheckOut()) && !r.getCheckOut().isAfter(nova.getCheckIn());
+            for (Reserva r : getReservas()){
+                if (r.getCheckIn().isBefore(nova.getCheckOut()) &&
+                        r.getCheckOut().isAfter(nova.getCheckIn())) {
+                    return false;
                 }
             }
         }
         return true;
     }
 
+    public double getPrecoDiaria() {
+        return precoDiaria;
+    }
 
+    public void setPrecoDiaria(double precoDiaria) {
+        this.precoDiaria = precoDiaria;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public void setAndar(String andar) {
+        this.andar = andar;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public void setTipoQuarto(TipoQuarto tipoQuarto) {
+        this.tipoQuarto = tipoQuarto;
+    }
+
+    public void setReservas(ArrayList<Reserva> reservas) {
+        this.reservas = reservas;
+    }
+
+    public void setLimiteAdultos(int limiteAdultos) {
+        this.limiteAdultos = limiteAdultos;
+    }
+
+    public void setLimiteCriancas(int limiteCriancas) {
+        this.limiteCriancas = limiteCriancas;
+    }
 }

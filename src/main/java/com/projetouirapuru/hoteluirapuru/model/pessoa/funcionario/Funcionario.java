@@ -3,7 +3,6 @@ package com.projetouirapuru.hoteluirapuru.model.pessoa.funcionario;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
 
@@ -16,6 +15,7 @@ public class Funcionario extends Pessoa {
         this.infoLogin = infoLogin;
         this.reservaResponsavel = reservaResponsavel;
     }
+    public Funcionario(){};
 
     public InfoLogin getInfoLogin() {
         return infoLogin;
@@ -35,7 +35,15 @@ public class Funcionario extends Pessoa {
     }
 
     @Override
-    public InfosBasicas getInfosBasicas() {
-        return super.getInfosBasicas();
+    public Documento getDocumento() {
+        return super.getDocumento();
+    }
+
+    public void setInfoLogin(InfoLogin infoLogin) {
+        this.infoLogin = infoLogin;
+    }
+
+    public void setReservaResponsavel(Reserva reservaResponsavel) {
+        this.reservaResponsavel = reservaResponsavel;
     }
 }

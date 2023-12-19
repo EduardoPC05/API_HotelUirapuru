@@ -4,18 +4,21 @@ package com.projetouirapuru.hoteluirapuru.model.pessoa.documento;
 
 import java.time.LocalDate;
 
-public class Documento extends InfosBasicas {
+public class Documento {
     protected String nomePai;
     protected String nomeMae;
     protected LocalDate dataNascimento;
     private String nacionalidade;
+    private TipoDocumento tipoDocumento;
+    private String numeroDocumento;
 
-    public Documento(InfosBasicas infos, String nomePai, String nomeMae, LocalDate dataNascimento, String nacionalidade) {
-        super(infos.getTipoDocumento(), infos.getNumeroDocumento());
+    public Documento(String nomePai, String nomeMae, LocalDate dataNascimento, String nacionalidade, TipoDocumento tipoDocumento, String numeroDocumento) {
         this.nomePai = nomePai;
         this.nomeMae = nomeMae;
         this.dataNascimento = dataNascimento;
         this.nacionalidade = nacionalidade;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroDocumento = numeroDocumento;
     }
 
     public String getNomePai() {
@@ -34,4 +37,11 @@ public class Documento extends InfosBasicas {
         return nacionalidade;
     }
 
+    public TipoDocumento getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public String getNumeroDocumento() {
+        return numeroDocumento;
+    }
 }

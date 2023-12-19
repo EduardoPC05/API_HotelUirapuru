@@ -1,11 +1,11 @@
 package com.projetouirapuru.hoteluirapuru.model.pessoa.clientes;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
 
 public class Acompanhante extends Pessoa {
-    public Acompanhante(String nome, InfosBasicas infos) {
-        super(nome, infos);
+    public Acompanhante(String nome, Documento documento) {
+        super(nome, documento);
     }
 
     @Override
@@ -14,7 +14,7 @@ public class Acompanhante extends Pessoa {
     }
 
     @Override
-    public InfosBasicas getInfosBasicas() {
-        return super.getInfosBasicas();
+    public Documento getDocumento() {
+        return super.getDocumento();
     }
 }

@@ -1,10 +1,9 @@
 package com.projetouirapuru.hoteluirapuru.service;
 
+import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Acompanhante;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Cliente;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.TipoDocumento;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.funcionario.Funcionario;
@@ -12,283 +11,402 @@ import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
-import com.projetouirapuru.hoteluirapuru.model.reserva.ReservaCheckIn;
 import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
-import com.projetouirapuru.hoteluirapuru.model.reserva.pagamento.TipoPagamento;
+import org.slf4j.helpers.FormattingTuple;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 
 public class HotelService {
-    private ArrayList<Reserva> reversasAtivas;
+    private ArrayList<Reserva> reservas;
 
     private ArrayList<Funcionario> funcionarios;
 
     private ArrayList<Acomodacao> acomodacoes;
 
+    private ArrayList<Hospede> hospedes;
+
 
     public HotelService() {
+
+
+        this.funcionarios = new ArrayList<>();
+        this.acomodacoes = new ArrayList<>();
+        this.hospedes = new ArrayList<>();
+        this.reservas = new ArrayList<>();
+
         // DADOS MOCKADOS
 
-        Acomodacao teste = new Acomodacao("12","12","ELE È BOM DMS", TipoQuarto.LUXO);
-        Acomodacao teste1 = new Acomodacao("12","33","ELE È BOM DMS", TipoQuarto.LUXO);
-        Acomodacao teste2 = new Acomodacao("12","44","ELE È BOM DMS", TipoQuarto.NORMAL);
-        Acomodacao teste3 = new Acomodacao("12","44","ELE È BOM DMS", TipoQuarto.SUITE);
+        Acomodacao quarto1 = new Acomodacao("12","12","PURO LUXO", TipoQuarto.LUXO);
+        Acomodacao quarto2 = new Acomodacao("11","11","PURO LUXO", TipoQuarto.LUXO);
+        Acomodacao quarto3 = new Acomodacao("10","10","NORMAL E BOM DMS", TipoQuarto.NORMAL);
+        Acomodacao quarto4 = new Acomodacao("9","9","SUITE BOM DMS", TipoQuarto.SUITE);
 
-        this.acomodacoes = new ArrayList<Acomodacao>();
-        acomodacoes.add(teste);
-        acomodacoes.add(teste1);
-        acomodacoes.add(teste2);
-        acomodacoes.add(teste3);
-
-        Endereco endereco = new Endereco("CE","Fortaleza","123123","Rua das avenidas","123");
-
-        InfosBasicas infos = new InfosBasicas(TipoDocumento.RG, "45678");
-        Documento doc = new Documento(infos,"Eduardo", "Jucá", LocalDate.of(1999, Month.JANUARY, 1), "br");
-
-        InfoLogin tes = new InfoLogin("@teste","123", TipoLogin.ADMINISTRADOR);
-        InfoLogin tes2 = new InfoLogin("@lusca","123", TipoLogin.CLIENTE);
+        acomodacoes.add(quarto1);
+        acomodacoes.add(quarto2);
+        acomodacoes.add(quarto3);
+        acomodacoes.add(quarto4);
 
 
-        Cliente ed = new Cliente("Ed",infos,tes);
-        Cliente lusca = new Cliente("Lusca",infos,tes2);
-
-        Reserva reserva = criarReserva("4321",ed, 1, TipoQuarto.LUXO,LocalDate.of(2011, Month.OCTOBER,20), LocalDate.of(2011,Month.OCTOBER,30));
-        Reserva reserva2 = criarReserva("433331", lusca, 0, TipoQuarto.LUXO,LocalDate.of(2012, Month.OCTOBER,20), LocalDate.of(2012,Month.OCTOBER,30));
-        efetuarReserva(reserva);
-        efetuarReserva(reserva2);
-
-        ReservaCheckIn reservaCheckIn = new ReservaCheckIn(reserva, endereco, "123123", LocalDateTime.of(LocalDate.of(2011,Month.OCTOBER,23),LocalTime.of(14,0,0)), doc);
-        ReservaCheckIn reservaCheckIn2 = new ReservaCheckIn(reserva2, endereco, "123123", LocalDateTime.of(LocalDate.of(2012,Month.OCTOBER,23),LocalTime.of(14,0,0)), doc);
-
-        efetuarCheckIn(reservaCheckIn);
-        efetuarCheckIn(reservaCheckIn2);
-    }
-    public boolean removerAcomodacao(String codigo){
-        return this.acomodacoes.removeIf(i -> i.getCodigo().equals(codigo));
-    }
-    public Acomodacao getAcomodacaoPorTipo(TipoQuarto tipoQuarto){
-        for (Acomodacao acomodacao: acomodacoes) {
-            if(acomodacao.getTipoQuarto() == tipoQuarto){
-                return acomodacao;
+            /*
+                    {
+                "nome": "TESTE S",
+                "documento": {
+                    "nomePai": "TESTE",
+                    "nomeMae": "TESTE",
+                    "dataNascimento": "2005-10-23",
+                    "nacionalidade": "Brasiliero",
+                    "tipoDocumento": "RG",
+                    "numeroDocumento": "DOCTESTE"
+                },
+                "endereco": {
+                    "estado": "SP",
+                    "cidade": "TESTE",
+                    "rua": "TESTE",
+                    "numero": "666",
+                    "bairro": "JDROSEIRA"
+                },
+                "telefone": "9999999",
+                "infoLogin": {
+                    "email": "teste@TESTE",
+                    "senha": "SENHA1234",
+                    "tipoLogin": "HOSPEDE"
+                }
             }
-        }
-        return null;
+         */
+
+
+        //LocalDate.of(2021,Month.OCTOBER,23), LocalDate.of(2021, Month.OCTOBER, 30)
+
+        Documento docEduardo = new Documento("PAIEDUARDO","MAEEDUARDO",LocalDate.of(2005,Month.OCTOBER,23),"Brasiliero",TipoDocumento.RG,"RGEDUARDO");
+        Endereco endEduardo = new Endereco("SP","IBITINGA","RIZZI","90","JDROSEIRA");
+        InfoLogin infEduardo = new InfoLogin("eduardo@TESTE","SENHA1234",TipoLogin.HOSPEDE);
+        Hospede eduardo = new Hospede("EDUARDO S",docEduardo,endEduardo,"9999999",infEduardo);
+        criaHospede(eduardo);
+
+        Documento docCaio = new Documento("PAICAIO","MAECAIO",LocalDate.of(2005,Month.MARCH,23),"Brasiliero",TipoDocumento.PASSAPORTE,"PASSAPORTECAIO");
+        Endereco endCaio = new Endereco("SP","IBITINGA","ROSEIRA","900","JDROSEIRA");
+        InfoLogin infCaio = new InfoLogin("caio@TESTE","SENHA1234",TipoLogin.HOSPEDE);
+        Hospede caio = new Hospede("CAIO L",docCaio,endCaio,"9989999",infCaio);
+        criaHospede(caio);
+
+        Reserva rEduardo = new Reserva("1212",eduardo,new ArrayList<Acompanhante>(),TipoQuarto.LUXO,LocalDate.of(2023,Month.OCTOBER,24),LocalDate.of(2023,Month.OCTOBER,30));
+        Reserva rCaio = new Reserva("1111",caio,new ArrayList<>(),TipoQuarto.LUXO,LocalDate.of(2023,Month.OCTOBER,24),LocalDate.of(2023,Month.OCTOBER,30));
+
+
+        criarReserva(rEduardo);
+        criarReserva(rCaio);
+
+
+
+
+
     }
-    public Acomodacao getAcomodacao(String codigo){
-        for (Acomodacao ac : acomodacoes){
-            if (ac.getCodigo().equals(codigo)){
-                return ac;
+
+    /*
+        HOSPEDES
+     */
+
+        /*
+            CRIAÇÃO DE NOVO HOSPEDE
+        */
+
+        public boolean criaHospede(Hospede novo){
+            return this.hospedes.add(novo);
+        }
+
+        /*
+            LEITURA DE HOSPEDES
+        */
+
+        public ArrayList<Hospede> getHospedes(){
+            return hospedes;
+        }
+
+        public Hospede getHospedePorDocumento(String nDocumento){
+            for (Hospede h : getHospedes()){
+                if (h.getDocumento().getNumeroDocumento().equals(nDocumento)){
+                    return h;
+                }
             }
+            return new Hospede();
         }
-        return new Acomodacao();
-    }
-    public boolean addAcomodacao(Acomodacao quarto){
-        return this.acomodacoes.add(quarto);
-    }
 
-    public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
-        ArrayList<Acomodacao> acomodacoesPorTipo = new ArrayList<Acomodacao>();
-        for (Acomodacao acomodacao : acomodacoes) {
-            if (acomodacao.getTipoQuarto().equals(TipoQuarto.valueOf(String.valueOf(tipo)))) {
-                acomodacoesPorTipo.add(acomodacao);
+        /*
+            EDIÇÃO DE HOSPEDES
+        */
+
+        public Hospede editaHospede(String nDocumento,Hospede novo){
+            getHospedePorDocumento(nDocumento).setNome(novo.getNome());
+            getHospedePorDocumento(nDocumento).setDocumento(novo.getDocumento());
+            getHospedePorDocumento(nDocumento).setEndereco(novo.getEndereco());
+            getHospedePorDocumento(nDocumento).setTelefone(novo.getTelefone());
+            getHospedePorDocumento(nDocumento).setInfoLogin(novo.getInfoLogin());
+            return  getHospedePorDocumento(nDocumento);
+        }
+
+        /*
+            EXCLUSÃO DO HOSPEDE
+        */
+
+        public Hospede excluiHospede(String nDocumento){
+            return getHospedes().remove(getHospedes().indexOf(getHospedePorDocumento(nDocumento)));
+        }
+
+    /*
+        ACOMODAÇÕES
+    */
+
+        /*
+            CRIAÇÃO DE NOVA ACOMODACOES
+        */
+
+        public boolean criaAcomodacao(Acomodacao novo){
+            return this.acomodacoes.add(novo);
+        }
+
+        /*
+            LEITURA DE ACOMODACOES
+        */
+
+        public ArrayList<Acomodacao> getAcomodacoes(){
+            return this.acomodacoes;
+        }
+
+        public Acomodacao getAcomodacao(String codigo){
+            for (Acomodacao ac : getAcomodacoes()){
+                if (ac.getCodigo().equals(codigo)){
+                    return ac;
+                }
             }
+            return new Acomodacao();
         }
-        return acomodacoesPorTipo;
-    }
-    public ArrayList<Acomodacao> getAcomodacoes(){
-        return this.acomodacoes;
-    }
 
-    public Acomodacao editarAcomodacao(Acomodacao nova, String codigo){
-        return acomodacoes.set(acomodacoes.indexOf(getAcomodacao(codigo)),nova);
-    }
+         /*
+            BUSCA POR TIPO DE QUARTO
+        */
 
-    //----------------------------------------------------------------------------------------
-
-    public boolean efetuarReserva(Reserva nova){
-        ArrayList<Acomodacao> acomodacoes = getAcomodacoesPorTipo(nova.getTipoQuarto());
-
-        for(Acomodacao acomodacao: acomodacoes) {
-            if(acomodacao.verificaReserva(nova)){
-                acomodacao.addReserva(nova);
-                return true;
+        public ArrayList<Acomodacao> getAcomodacoesTipo(TipoQuarto tipoQuarto){
+            ArrayList<Acomodacao> retorno = new ArrayList<>();
+            for (Acomodacao ac : getAcomodacoes()){
+                if(ac.getTipoQuarto().equals(tipoQuarto)){
+                    retorno.add(ac);
+                }
             }
+            return retorno;
         }
 
-        return false;
-    }
+        /*
+            EDIÇÃO DE ACOMODACAO
+        */
 
-    //RESERVA
+        public Acomodacao editaAcomodacao(String codigo, Acomodacao nova){
+            getAcomodacao(codigo).setAndar(nova.getAndar());
+            getAcomodacao(codigo).setNumero(nova.getNumero());
+            getAcomodacao(codigo).setDescricao(nova.getDescricao());
+            getAcomodacao(codigo).setLimiteAdultos(nova.getLimiteAdultos());
+            getAcomodacao(codigo).setLimiteCriancas(nova.getLimiteCriancas());
+            getAcomodacao(codigo).setReservas(nova.getReservas());
+            getAcomodacao(codigo).setPrecoDiaria(nova.getPrecoDiaria());
+            getAcomodacao(codigo).setCodigo(nova.getCodigo());
 
-    public Reserva criarReserva(String codigo,Cliente hospedePrincipal, int qtdAcompanhantes, TipoQuarto tipoQuarto, LocalDate checkIn, LocalDate checkOut){
-        return new Reserva(codigo,hospedePrincipal, qtdAcompanhantes, tipoQuarto, checkIn, checkOut);
-    }
+            return getAcomodacao(nova.getCodigo());
+        }
 
-    public Reserva criarReserva(Reserva reservaNova) {
-        	return new Reserva(reservaNova.getCodigo(), reservaNova.getHospedePrincipal(),
-                    reservaNova.getQtdAcompanhantes(), reservaNova.getTipoQuarto(),
-                    LocalDate.of(reservaNova.getCheckIn().getYear(), reservaNova.getCheckIn().getMonth(),
-                            reservaNova.getCheckIn().getDayOfMonth()),
-                    LocalDate.of(reservaNova.getCheckOut().getYear(), reservaNova.getCheckOut().getMonth(),
-                            reservaNova.getCheckOut().getDayOfMonth()));
-    }
+        /*
+            EXCLUSÃO DO ACOMODACAO
+        */
 
-    public boolean excluirReserva(String codigo){
-        return removeReserva(getReserva(codigo));
-    }
-
-    private boolean removeReserva(Reserva excluir){
-        return this.reversasAtivas.remove(excluir);
-    }
-
-    public ArrayList<Reserva> getReservas(String email){
-        ArrayList<Reserva> reservasUsuario = new ArrayList<>();
-        for (Reserva r : getReservas()){
-            if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
-                reservasUsuario.add(r);
+        public Acomodacao excluiAcomodacao(String codigo){
+           return getAcomodacoes().remove(getAcomodacoes().indexOf(getAcomodacao(codigo)));
+        }
+         /*
+        RESERVAS
+     */
+        /*
+            CRIAÇÃO DE NOVA RESERVA
+        */
+            public boolean criarReserva(Reserva nova){
+            if (verficaReservaH(nova)){
+               nova.setPrecoDiaria(getAcomodacao(nova.getCodigoAcomodacao()).getPrecoDiaria());
+               return this.reservas.add(nova);
             }
-        }
-        return reservasUsuario;
-    }
-    public Reserva getReserva(String codigo){
-        for (Reserva r : getReservas()){
-            if (r.getAcompanhantes().equals(codigo)){
-                return r;
-            }
-        }
-        return new Reserva();
-    }
-    public ArrayList<Reserva> getReservasQuarto(String codigo){
-        for (Acomodacao ac : getAcomodacoes()){
-            if (ac.getCodigo().equals(codigo)){
-                return ac.getReservas();
-            }
-        }
-        return new ArrayList<Reserva>();
-    }
-    public ArrayList<Reserva> getReservas(){
-        ArrayList<Reserva> reservasRetorno = new ArrayList<>();
-
-        for (Acomodacao rs : acomodacoes){
-            reservasRetorno.addAll(rs.getReservas());
+            return false;
         }
 
-        return reservasRetorno;
-    }
-    public ArrayList<Reserva> getReservasAtivas(){
-        ArrayList<Reserva> retorno = new ArrayList<>();
-        for(Acomodacao a : acomodacoes){
-            for(Reserva r : a.getReservas()){
-                if(r.getReservaAtiva()){
+        /*
+            LEITURA DE RESERVAS
+        */
+
+        public ArrayList<Reserva> getReservas(){
+            return this.reservas;
+        }
+        public ArrayList<Reserva> getReservasAtivas(){
+            ArrayList<Reserva> retorno  = new ArrayList<>();
+            for (Reserva r : getReservas()){
+                if (r.isAtiva()){
                     retorno.add(r);
                 }
             }
+            return retorno;
         }
-        return retorno;
-    }
-
-
-    public Hospede criarHospedes(Cliente cliente,Endereco endereco, String telefone){
-        return new Hospede(cliente,endereco,telefone);
-    }
-
-
-    public Endereco criarEndereco( String estado,String cidade,String rua,String numero,String bairro){
-        return new Endereco(estado,cidade,rua,numero,bairro);
-    };
-
-    public ArrayList<Acomodacao> getTipoQuartosDisponiveis(){
-        ArrayList<Acomodacao> retorno = new ArrayList<>();
-
-        for (TipoQuarto c: TipoQuarto.values()){
-            if (getAcomodacaoPorTipo(c) != null){
-                retorno.add(getAcomodacaoPorTipo(c));
+        public ArrayList<Reserva> getReservas(String email){
+            ArrayList<Reserva> retorno = new ArrayList<>();
+            for (Reserva r : getReservas()){
+                if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
+                    retorno.add(r);
+                }
             }
+            return retorno;
         }
-
-        return  retorno;
-    }
-
-    private Boolean adicionarDocumento(Reserva reserva, Documento documento){
-        Documento doc = new Documento(reserva.getHospedePrincipal().getInfosBasicas(), documento.getNomePai(), documento.getNomeMae(), documento.getDataNascimento(), documento.getNacionalidade());
-        reserva.getHospedePrincipal().setInfosBasicas(doc);
-        if(reserva.getHospedePrincipal().hasDocumento(reserva.getHospedePrincipal().getInfosBasicas())){
-            return true;
-        }
-        return false;
-    }
-
-
-    public boolean efetuarCheckIn(ReservaCheckIn reserva){
-        if(reserva.getReserva().getHospedePrincipal() instanceof Hospede == false){
-            if(reserva.getChegada().isAfter(reserva.getReserva().getCheckIn()) && reserva.getChegada().isBefore(reserva.getReserva().getCheckOut())){
-                reserva.getReserva().setHorarioChegada(reserva.getChegada());
-                adicionarDocumento(reserva.getReserva(), reserva.getDocumento());
-                Hospede hospede = new Hospede(reserva.getReserva().getHospedePrincipal(), reserva.getEndereco(), reserva.getTelefone());
-                reserva.getReserva().setHospedePrincipal(hospede);
-                return true;
+        public Reserva getReserva(String email){
+            for (Reserva r : getReservas()){
+                if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
+                    return r;
+                }
             }
+            return new Reserva();
         }
-        return false;
-    }
 
-    private Acompanhante criarAcompanhante(String nome, InfosBasicas infos){
-        return new Acompanhante(nome, infos);
-    }
+        /*
+            EDITA RESERVA
+        */
 
-    public void cadastrarAcompanhante(Reserva reserva, String nome, InfosBasicas infos){
-        reserva.addAcompanhantes(criarAcompanhante(nome, infos));
-    }
-
-    public boolean efetuarCheckOut(Reserva reserva, TipoPagamento tipoPagamento, LocalDateTime saida){
-        if(reserva.getReservaAtiva()){
-            Cliente cliente = new Cliente(reserva.getHospedePrincipal().getNome(),reserva.getHospedePrincipal().getInfosBasicas(), reserva.getHospedePrincipal().getInfoLogin());
-            reserva.setTipoPagamento(tipoPagamento);
-            reserva.setHospedePrincipal(cliente);
-            reserva.setHorarioSaida(saida);
-            return true;
+        public Reserva editaReserva(String email,Reserva nova){
+           getReserva(email).setAcompanhantes(nova.getAcompanhantes());
+           getReserva(email).setCheckIn(nova.getCheckIn());
+           getReserva(email).setCheckOut(nova.getCheckOut());
+           getReserva(email).setTipoQuarto(nova.getTipoQuarto());
+           getReserva(email).setAcompanhantes(nova.getAcompanhantes());
+           getReserva(email).setHospedePrincipal(nova.getHospedePrincipal());
+           getReserva(email).setDataChegada(nova.getDataChegada());
+           getReserva(email).setDataSaida(nova.getDataSaida());
+           getReserva(email).setCodigoAcomodacao(nova.getCodigoAcomodacao());
+           return getReserva(email);
         }
-        return false;
-    }
 
-    public void efetuarPagamento(Reserva reserva, String nome, String numero, int cvv, int mesValidade, int anoValidade){
-        reserva.setPagamentoCartao(nome, numero, cvv, mesValidade, anoValidade);
-    }
+        /*
+           DELETA RESERVA
+        */
 
-    public void efetuarPagamento(Reserva reserva, double valor){
-        LocalDate dataValidade =  reserva.getCheckOut().toLocalDate();
-        dataValidade.plusDays(30);
-        reserva.setPagamentoBoleto(dataValidade, valor);
-    }
+        public Reserva excluiReserva(String email){
+            return getReservas().remove(getReservas().indexOf(getReserva(email)));
+        }
 
-    public void efetuarPagamento(Reserva reserva, String nomeBeneficiario){
-        reserva.setPagamentoCheque(nomeBeneficiario);
-    }
+        /*
+            VALIDACAO DA RESERVA
+        */
+        private Boolean verficaReservaH(Reserva nova){
+            for (Acomodacao ac : getAcomodacoesTipo(nova.getTipoQuarto())){
+                if (ac.verificaReserva(nova)){
+                    return true;
+                }
+            }
+            return false;
+        }
 
+    /*
+       FUNCIONARIOS
+    */
 
-    public TipoLogin verificaLogin(String email, String senha){
-        for(Acomodacao a : acomodacoes){
-            for(Reserva r : a.getReservas()){
+        /*
+           CRIA FUNCIONARIO
+        */
+
+        public Boolean criaFuncionario(Funcionario novo){
+           return this.funcionarios.add(novo);
+        }
+
+        /*
+            LEITURA DE RESERVAS
+        */
+
+        public ArrayList<Funcionario> getFuncionarios(){
+            return this.funcionarios;
+        }
+        public Funcionario getFuncionario(String nDocumento){
+            for (Funcionario f: getFuncionarios()){
+                if (f.getDocumento().getNumeroDocumento().equals(nDocumento)){
+                    return f;
+                }
+            }
+            return new Funcionario();
+        }
+
+        /*
+           EDITA FUNCIONARIO
+        */
+
+        public Funcionario editaFuncionario(String nDocumento,Funcionario f){
+            getFuncionario(nDocumento).setReservaResponsavel(f.getReservaResponsavel());
+            getFuncionario(nDocumento).setNome(f.getNome());
+            getFuncionario(nDocumento).setInfoLogin(f.getInfoLogin());
+            getFuncionario(nDocumento).setDocumento(f.getDocumento());
+            return getFuncionario(f.getDocumento().getNumeroDocumento());
+        }
+
+        /*
+            DELETA FUNCIONARIO
+        */
+        public boolean excluiFuncionario(String nDocumento){
+            return getFuncionarios().remove(getFuncionario(nDocumento));
+        }
+    /*
+        PRINCIPAIS METODOS
+    */
+        public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
+            ArrayList<Acomodacao> acomodacoesPorTipo = new ArrayList<Acomodacao>();
+            for (Acomodacao acomodacao : acomodacoes) {
+                if (acomodacao.getTipoQuarto() == tipo) {
+                    acomodacoesPorTipo.add(acomodacao);
+                }
+            }
+            return acomodacoesPorTipo;
+        }
+        public Acomodacao getAcomodacaoPorTipo(TipoQuarto tipoQuarto){
+            for (Acomodacao acomodacao: acomodacoes) {
+                if(acomodacao.getTipoQuarto() == tipoQuarto){
+                    return acomodacao;
+                }
+            }
+            return null;
+        }
+
+        /*
+            VALIDAÇÃO DE LOGIN
+        */
+
+        public Pessoa verificaLogin(String email, String senha){
+            Hospede h = new Hospede();
+            for(Reserva r : getReservas()){
                 if(r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
                     if(r.getHospedePrincipal().getInfoLogin().getSenha().equals(senha)){
-                        return r.getHospedePrincipal().getInfoLogin().getTipoLogin();
+                        return r.getHospedePrincipal();
                     }
                 }
             }
-        }
-        for(Funcionario f : funcionarios){
-            if(f.getInfoLogin().getEmail().equals(email)){
-                if(f.getInfoLogin().getSenha().equals(senha)){
-                    return f.getInfoLogin().getTipoLogin();
+            for (Funcionario f : getFuncionarios()){
+                if(f.getInfoLogin().getEmail().equals(email)){
+                    if(f.getInfoLogin().getSenha().equals(senha)){
+                        return f;
+                    }
                 }
             }
+
+            return new Pessoa() {};
         }
-        return null;
-    }
+
+        public boolean checkIn(Reserva reserva,LocalDateTime chegada){
+            reserva.setDataChegada(chegada);
+            return true;
+        }
+
+        public double checkOut(Reserva reserva, LocalDateTime saida){
+            reserva.setDataSaida(saida);
+            return reserva.getPrecoEstadia();
+        }
 
 
 }

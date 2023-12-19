@@ -1,18 +1,26 @@
 package com.projetouirapuru.hoteluirapuru.model.pessoa.clientes;
 
-import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.InfosBasicas;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.Pessoa;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.documento.Documento;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.endereco.Endereco;
 import com.projetouirapuru.hoteluirapuru.model.pessoa.login.InfoLogin;
 
 
-public class Hospede extends Cliente {
+public class Hospede extends Pessoa {
     private Endereco endereco;
     private String telefone;
+    private InfoLogin infoLogin;
 
-    public Hospede(Cliente cliente, Endereco endereco, String telefone) {
-        super(cliente.getNome(), cliente.getInfosBasicas(), cliente.getInfoLogin());
+
+    public Hospede(String nome, Documento documento, Endereco endereco, String telefone, InfoLogin infoLogin) {
+        super(nome, documento);
         this.endereco = endereco;
         this.telefone = telefone;
+        this.infoLogin = infoLogin;
+    }
+
+    public Hospede() {
+        super();
     }
 
     public Endereco getEndereco() {
@@ -23,9 +31,8 @@ public class Hospede extends Cliente {
         return telefone;
     }
 
-    @Override
     public InfoLogin getInfoLogin() {
-        return super.getInfoLogin();
+        return infoLogin;
     }
 
     @Override
@@ -34,8 +41,24 @@ public class Hospede extends Cliente {
     }
 
     @Override
-    public InfosBasicas
-    getInfosBasicas() {
-        return super.getInfosBasicas();
+    public void setNome(String nome) {
+        super.setNome(nome);
+    }
+
+    @Override
+    public Documento getDocumento() {
+        return super.getDocumento();
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setInfoLogin(InfoLogin infoLogin) {
+        this.infoLogin = infoLogin;
     }
 }
