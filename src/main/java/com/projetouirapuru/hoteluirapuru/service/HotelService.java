@@ -301,15 +301,14 @@ public class HotelService {
         */
 
         public TipoLogin verificaLogin(String email, String senha){
-            for(Acomodacao a : acomodacoes){
-                for(Reserva r : a.getReservas()){
-                    if(r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
-                        if(r.getHospedePrincipal().getInfoLogin().getSenha().equals(senha)){
-                            return r.getHospedePrincipal().getInfoLogin().getTipoLogin();
-                        }
+            for(Reserva r : getReservas()){
+                if(r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
+                    if(r.getHospedePrincipal().getInfoLogin().getSenha().equals(senha)){
+                        return r.getHospedePrincipal().getInfoLogin().getTipoLogin();
                     }
                 }
             }
+
             for(Funcionario f : funcionarios){
                 if(f.getInfoLogin().getEmail().equals(email)){
                     if(f.getInfoLogin().getSenha().equals(senha)){
@@ -320,6 +319,8 @@ public class HotelService {
             return null;
         }
 
-
+//        public boolean checkIn(){
+//
+//        }
 
 }
