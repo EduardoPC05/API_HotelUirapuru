@@ -297,6 +297,23 @@ public class HotelService {
     /*
         PRINCIPAIS METODOS
     */
+        public ArrayList<Acomodacao> getAcomodacoesPorTipo(TipoQuarto tipo) {
+            ArrayList<Acomodacao> acomodacoesPorTipo = new ArrayList<Acomodacao>();
+            for (Acomodacao acomodacao : acomodacoes) {
+                if (acomodacao.getTipoQuarto() == tipo) {
+                    acomodacoesPorTipo.add(acomodacao);
+                }
+            }
+            return acomodacoesPorTipo;
+        }
+        public Acomodacao getAcomodacaoPorTipo(TipoQuarto tipoQuarto){
+            for (Acomodacao acomodacao: acomodacoes) {
+                if(acomodacao.getTipoQuarto() == tipoQuarto){
+                    return acomodacao;
+                }
+            }
+            return null;
+        }
 
         /*
             VALIDAÇÃO DE LOGIN

@@ -31,6 +31,7 @@ public class Reserva {
         this.tipoQuarto = tipoQuarto;
         this.checkIn = LocalDateTime.of(checkIn, LocalTime.of(12,0,0));
         this.checkOut = LocalDateTime.of(checkOut,LocalTime.of(9,0,0));
+
     }
     public Reserva(){}
 
@@ -111,7 +112,7 @@ public class Reserva {
     }
 
     public boolean isAtiva(){
-        return getDataChegada() == null;
+        return getDataChegada() != null;
     }
 
     public void setCodigoAcomodacao(String codigoAcomodacao) {

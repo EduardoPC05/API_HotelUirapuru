@@ -182,21 +182,29 @@ public class HotelController {
         PRINCIPAIS METEDOS
     */
 
+    @GetMapping("/tipoquarto")
+    public ArrayList<Acomodacao> gettipoquarto(){
+        ArrayList<Acomodacao> retorno = new ArrayList<>();
+
+        for (TipoQuarto tq : TipoQuarto.values()){
+            retorno.add(hotelService.getAcomodacaoPorTipo(tq));
+        }
+
+        return retorno;
+
+    }
     @GetMapping("/login/{email}/{senha}")
     public TipoLogin verficaLogin(@PathVariable String email, @PathVariable String senha){
         return hotelService.verificaLogin(email,senha);
     }
-
     @PostMapping("/checkIn")
     public boolean checkIn(@RequestBody ReservaCheckInCheckOut reserva){
         return hotelService.checkIn(reserva.getReserva(), reserva.getData());
     }
-
     @PostMapping("/checkOut")
     public double checkOut(@RequestBody ReservaCheckInCheckOut reserva){
         return hotelService.checkOut(reserva.getReserva(), reserva.getData());
     }
-
     @GetMapping("/format")
     public LocalDateTime format(){
         return getReservas().getFirst().getCheckIn();
