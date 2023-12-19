@@ -252,7 +252,7 @@ public class HotelService {
             }
             return retorno;
         }
-        public ArrayList<Reserva> getReservas(String email){
+        public ArrayList<Reserva> getReservasEmail(String email){
             ArrayList<Reserva> retorno = new ArrayList<>();
             for (Reserva r : getReservas()){
                 if (r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){

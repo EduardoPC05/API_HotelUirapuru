@@ -167,8 +167,8 @@ public class HotelController {
     }
 
     @GetMapping("/reservas/{email}")
-    public Reserva getReservaCodigo(@PathVariable String email){
-        return  hotelService.getReserva(email);
+    public ArrayList<Reserva> getReservaCodigo(@PathVariable String email){
+        return  hotelService.getReservasEmail(email);
     }
     @PutMapping("/reservas/{email}")
     public Reserva editaReserva(@PathVariable String email, @RequestBody Reserva nova){
