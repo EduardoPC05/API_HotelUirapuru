@@ -217,7 +217,7 @@ public class HotelService {
         public Acomodacao excluiAcomodacao(String codigo){
            return getAcomodacoes().remove(getAcomodacoes().indexOf(getAcomodacao(codigo)));
         }
-     /*
+         /*
         RESERVAS
      */
         /*
@@ -290,6 +290,34 @@ public class HotelService {
                 }
             }
             return false;
+        }
+
+    /*
+        PRINCIPAIS METODOS
+    */
+
+        /*
+            VALIDAÇÃO DE LOGIN
+        */
+
+        public TipoLogin verificaLogin(String email, String senha){
+            for(Acomodacao a : acomodacoes){
+                for(Reserva r : a.getReservas()){
+                    if(r.getHospedePrincipal().getInfoLogin().getEmail().equals(email)){
+                        if(r.getHospedePrincipal().getInfoLogin().getSenha().equals(senha)){
+                            return r.getHospedePrincipal().getInfoLogin().getTipoLogin();
+                        }
+                    }
+                }
+            }
+            for(Funcionario f : funcionarios){
+                if(f.getInfoLogin().getEmail().equals(email)){
+                    if(f.getInfoLogin().getSenha().equals(senha)){
+                        return f.getInfoLogin().getTipoLogin();
+                    }
+                }
+            }
+            return null;
         }
 
 

@@ -1,8 +1,10 @@
 package com.projetouirapuru.hoteluirapuru.controller;
 
 import com.projetouirapuru.hoteluirapuru.model.pessoa.clientes.Hospede;
+import com.projetouirapuru.hoteluirapuru.model.pessoa.login.TipoLogin;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Acomodacao;
 import com.projetouirapuru.hoteluirapuru.model.reserva.Reserva;
+import com.projetouirapuru.hoteluirapuru.model.reserva.TipoQuarto;
 import com.projetouirapuru.hoteluirapuru.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 
@@ -172,6 +174,19 @@ public class HotelController {
     public Reserva excluiReserva(@PathVariable String codigo){
         return hotelService.excluiReserva(codigo);
     }
+
+    /*
+        PRINCIPAIS METEDOS
+    */
+
+    @GetMapping("/login/{email}/{senha}")
+    public TipoLogin verficaLogin(@PathVariable String email, @PathVariable String senha){
+        return hotelService.verificaLogin(email,senha);
+    }
+
+
+
+
 
 
 
